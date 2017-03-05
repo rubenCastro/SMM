@@ -7,6 +7,7 @@ package p4;
 
 import java.awt.Color;
 import java.awt.Point;
+import p4.MainWindow.FIGURE_TYPE;
 
 /**
  *
@@ -18,12 +19,17 @@ public class MyFigure {
     private Point finish;
     private Color color;
     private Boolean filled;
+    private FIGURE_TYPE type;
 
-    public MyFigure(Point start, Point finish, Color color, Boolean filled) {
+    public MyFigure() {
+    }
+
+    public MyFigure(Point start, Point finish, Color color, Boolean filled, FIGURE_TYPE type) {
         this.start = start;
         this.finish = finish;
         this.color = color;
         this.filled = filled;
+        this.type = type;
     }
 
     public Boolean getFilled() {
@@ -34,14 +40,16 @@ public class MyFigure {
         this.filled = filled;
     }
 
-    public MyFigure(Point start, Point finish, Color color) {
-        this.start = start;
-        this.finish = finish;
-        this.color = color;
-    }
-
     public Point getStart() {
         return start;
+    }
+
+    public FIGURE_TYPE getType() {
+        return type;
+    }
+
+    public void setType(FIGURE_TYPE type) {
+        this.type = type;
     }
 
     public void setStart(Point start) {
