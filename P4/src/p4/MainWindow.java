@@ -5,6 +5,8 @@
  */
 package p4;
 
+import java.awt.Color;
+
 /**
  *
  * @author jacortes
@@ -17,6 +19,12 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
         initComponents();
         this.setLocationRelativeTo(null);
+        drawMyCanvas.addMouseListener(drawMyCanvas);
+    }
+
+    protected enum FIGURE_TYPE {
+        OVAL, LINE, SQUARE, CIRCLE,
+        ALL;
     }
 
     /**
@@ -36,20 +44,20 @@ public class MainWindow extends javax.swing.JFrame {
         lineButton = new javax.swing.JToggleButton();
         squareButton = new javax.swing.JToggleButton();
         ellipseButton = new javax.swing.JToggleButton();
-        canvasPanel = new javax.swing.JPanel();
         bottomPanel = new javax.swing.JPanel();
         colorsPanel = new javax.swing.JPanel();
         colorsGroupPanel = new javax.swing.JPanel();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jToggleButton2 = new javax.swing.JToggleButton();
-        jToggleButton6 = new javax.swing.JToggleButton();
-        jToggleButton5 = new javax.swing.JToggleButton();
-        jToggleButton4 = new javax.swing.JToggleButton();
-        jToggleButton3 = new javax.swing.JToggleButton();
+        blackToggleButton = new javax.swing.JToggleButton();
+        whiteToggleButton = new javax.swing.JToggleButton();
+        blueToggleButton = new javax.swing.JToggleButton();
+        yellowToggleButton = new javax.swing.JToggleButton();
+        redToggleButton = new javax.swing.JToggleButton();
+        greenToggleButton = new javax.swing.JToggleButton();
         colorsOptionPanel = new javax.swing.JPanel();
         fillCheckBox = new javax.swing.JCheckBox();
         statusPanel = new javax.swing.JPanel();
         statusLabel = new javax.swing.JLabel();
+        drawMyCanvas = new p4.MyCanvas();
         topMenuBar = new javax.swing.JMenuBar();
         fileTopMenu = new javax.swing.JMenu();
         newMenuItem = new javax.swing.JMenuItem();
@@ -67,25 +75,41 @@ public class MainWindow extends javax.swing.JFrame {
 
         figuresButtonGroup.add(dotButton);
         dotButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p4/Lapiz.gif"))); // NOI18N
+        dotButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dotButtonActionPerformed(evt);
+            }
+        });
         figuresPanel.add(dotButton);
 
         figuresButtonGroup.add(lineButton);
         lineButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p4/Linea.gif"))); // NOI18N
+        lineButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lineButtonActionPerformed(evt);
+            }
+        });
         figuresPanel.add(lineButton);
 
         figuresButtonGroup.add(squareButton);
         squareButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p4/Rectangulo.gif"))); // NOI18N
+        squareButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                squareButtonActionPerformed(evt);
+            }
+        });
         figuresPanel.add(squareButton);
 
         figuresButtonGroup.add(ellipseButton);
         ellipseButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p4/Ovalo.gif"))); // NOI18N
+        ellipseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ellipseButtonActionPerformed(evt);
+            }
+        });
         figuresPanel.add(ellipseButton);
 
         mainPanel.add(figuresPanel, java.awt.BorderLayout.PAGE_START);
-
-        canvasPanel.setBackground(new java.awt.Color(255, 255, 255));
-        canvasPanel.setPreferredSize(new java.awt.Dimension(200, 200));
-        mainPanel.add(canvasPanel, java.awt.BorderLayout.CENTER);
 
         bottomPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         bottomPanel.setLayout(new java.awt.BorderLayout());
@@ -94,49 +118,74 @@ public class MainWindow extends javax.swing.JFrame {
 
         colorsGroupPanel.setLayout(new java.awt.GridLayout(2, 3, 1, 1));
 
-        jToggleButton1.setBackground(java.awt.Color.black);
-        colorsButtonGroup.add(jToggleButton1);
-        jToggleButton1.setPreferredSize(new java.awt.Dimension(20, 20));
-        colorsGroupPanel.add(jToggleButton1);
-
-        jToggleButton2.setBackground(new java.awt.Color(255, 255, 255));
-        colorsButtonGroup.add(jToggleButton2);
-        jToggleButton2.setPreferredSize(new java.awt.Dimension(20, 20));
-        colorsGroupPanel.add(jToggleButton2);
-
-        jToggleButton6.setBackground(java.awt.Color.blue);
-        colorsButtonGroup.add(jToggleButton6);
-        jToggleButton6.setPreferredSize(new java.awt.Dimension(20, 20));
-        jToggleButton6.addActionListener(new java.awt.event.ActionListener() {
+        blackToggleButton.setBackground(java.awt.Color.black);
+        colorsButtonGroup.add(blackToggleButton);
+        blackToggleButton.setPreferredSize(new java.awt.Dimension(20, 20));
+        blackToggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton6ActionPerformed(evt);
+                blackToggleButtonActionPerformed(evt);
             }
         });
-        colorsGroupPanel.add(jToggleButton6);
+        colorsGroupPanel.add(blackToggleButton);
 
-        jToggleButton5.setBackground(java.awt.Color.yellow);
-        colorsButtonGroup.add(jToggleButton5);
-        jToggleButton5.setPreferredSize(new java.awt.Dimension(20, 20));
-        colorsGroupPanel.add(jToggleButton5);
-
-        jToggleButton4.setBackground(java.awt.Color.red);
-        colorsButtonGroup.add(jToggleButton4);
-        jToggleButton4.setPreferredSize(new java.awt.Dimension(20, 20));
-        jToggleButton4.addActionListener(new java.awt.event.ActionListener() {
+        whiteToggleButton.setBackground(new java.awt.Color(255, 255, 255));
+        colorsButtonGroup.add(whiteToggleButton);
+        whiteToggleButton.setPreferredSize(new java.awt.Dimension(20, 20));
+        whiteToggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton4ActionPerformed(evt);
+                whiteToggleButtonActionPerformed(evt);
             }
         });
-        colorsGroupPanel.add(jToggleButton4);
+        colorsGroupPanel.add(whiteToggleButton);
 
-        jToggleButton3.setBackground(java.awt.Color.green);
-        colorsButtonGroup.add(jToggleButton3);
-        jToggleButton3.setPreferredSize(new java.awt.Dimension(20, 20));
-        colorsGroupPanel.add(jToggleButton3);
+        blueToggleButton.setBackground(java.awt.Color.blue);
+        colorsButtonGroup.add(blueToggleButton);
+        blueToggleButton.setPreferredSize(new java.awt.Dimension(20, 20));
+        blueToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blueToggleButtonActionPerformed(evt);
+            }
+        });
+        colorsGroupPanel.add(blueToggleButton);
+
+        yellowToggleButton.setBackground(java.awt.Color.yellow);
+        colorsButtonGroup.add(yellowToggleButton);
+        yellowToggleButton.setPreferredSize(new java.awt.Dimension(20, 20));
+        yellowToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yellowToggleButtonActionPerformed(evt);
+            }
+        });
+        colorsGroupPanel.add(yellowToggleButton);
+
+        redToggleButton.setBackground(java.awt.Color.red);
+        colorsButtonGroup.add(redToggleButton);
+        redToggleButton.setPreferredSize(new java.awt.Dimension(20, 20));
+        redToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                redToggleButtonActionPerformed(evt);
+            }
+        });
+        colorsGroupPanel.add(redToggleButton);
+
+        greenToggleButton.setBackground(java.awt.Color.green);
+        colorsButtonGroup.add(greenToggleButton);
+        greenToggleButton.setPreferredSize(new java.awt.Dimension(20, 20));
+        greenToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                greenToggleButtonActionPerformed(evt);
+            }
+        });
+        colorsGroupPanel.add(greenToggleButton);
 
         colorsPanel.add(colorsGroupPanel, java.awt.BorderLayout.WEST);
 
         fillCheckBox.setText("Fill");
+        fillCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fillCheckBoxActionPerformed(evt);
+            }
+        });
         colorsOptionPanel.add(fillCheckBox);
 
         colorsPanel.add(colorsOptionPanel, java.awt.BorderLayout.LINE_END);
@@ -152,6 +201,7 @@ public class MainWindow extends javax.swing.JFrame {
         bottomPanel.add(statusPanel, java.awt.BorderLayout.SOUTH);
 
         mainPanel.add(bottomPanel, java.awt.BorderLayout.SOUTH);
+        mainPanel.add(drawMyCanvas, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
@@ -201,46 +251,102 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_showMenuItemActionPerformed
 
-    private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton6ActionPerformed
+    private void blueToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blueToggleButtonActionPerformed
+        drawMyCanvas.setActiveColor(Color.BLUE);
+        drawMyCanvas.getActiveFigure().setColor(Color.BLUE);
+    }//GEN-LAST:event_blueToggleButtonActionPerformed
 
-    private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton4ActionPerformed
+    private void redToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redToggleButtonActionPerformed
+        drawMyCanvas.setActiveColor(Color.RED);
+        drawMyCanvas.getActiveFigure().setColor(Color.RED);
+    }//GEN-LAST:event_redToggleButtonActionPerformed
+
+    private void dotButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dotButtonActionPerformed
+        statusLabel.setText("Oval");
+        drawMyCanvas.setActiveType(FIGURE_TYPE.OVAL);
+        drawMyCanvas.getActiveFigure().setType(FIGURE_TYPE.OVAL);
+    }//GEN-LAST:event_dotButtonActionPerformed
+
+    private void squareButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_squareButtonActionPerformed
+        statusLabel.setText("Square");
+        drawMyCanvas.setActiveType(FIGURE_TYPE.SQUARE);
+        drawMyCanvas.getActiveFigure().setType(FIGURE_TYPE.SQUARE);
+    }//GEN-LAST:event_squareButtonActionPerformed
+
+    private void fillCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillCheckBoxActionPerformed
+        if (fillCheckBox.isSelected()) {
+            drawMyCanvas.setIsFilled(true);
+            drawMyCanvas.getActiveFigure().setFilled(true);
+        } else {
+            drawMyCanvas.setIsFilled(false);
+            drawMyCanvas.getActiveFigure().setFilled(false);
+        }
+    }//GEN-LAST:event_fillCheckBoxActionPerformed
+
+    private void blackToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blackToggleButtonActionPerformed
+        drawMyCanvas.setActiveColor(Color.BLACK);
+        drawMyCanvas.getActiveFigure().setColor(Color.BLACK);
+    }//GEN-LAST:event_blackToggleButtonActionPerformed
+
+    private void whiteToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_whiteToggleButtonActionPerformed
+        drawMyCanvas.setActiveColor(Color.WHITE);
+        drawMyCanvas.getActiveFigure().setColor(Color.WHITE);
+    }//GEN-LAST:event_whiteToggleButtonActionPerformed
+
+    private void yellowToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yellowToggleButtonActionPerformed
+        drawMyCanvas.setActiveColor(Color.YELLOW);
+        drawMyCanvas.getActiveFigure().setColor(Color.YELLOW);
+    }//GEN-LAST:event_yellowToggleButtonActionPerformed
+
+    private void greenToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_greenToggleButtonActionPerformed
+        drawMyCanvas.setActiveColor(Color.GREEN);
+        drawMyCanvas.getActiveFigure().setColor(Color.GREEN);
+    }//GEN-LAST:event_greenToggleButtonActionPerformed
+
+    private void lineButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lineButtonActionPerformed
+        statusLabel.setText("Line");
+        drawMyCanvas.setActiveType(FIGURE_TYPE.LINE);
+        drawMyCanvas.getActiveFigure().setType(FIGURE_TYPE.LINE);
+    }//GEN-LAST:event_lineButtonActionPerformed
+
+    private void ellipseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ellipseButtonActionPerformed
+        statusLabel.setText("CIRCLE");
+        drawMyCanvas.setActiveType(FIGURE_TYPE.CIRCLE);
+        drawMyCanvas.getActiveFigure().setType(FIGURE_TYPE.CIRCLE);
+    }//GEN-LAST:event_ellipseButtonActionPerformed
 
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton blackToggleButton;
+    private javax.swing.JToggleButton blueToggleButton;
     private javax.swing.JPanel bottomPanel;
-    private javax.swing.JPanel canvasPanel;
     private javax.swing.ButtonGroup colorsButtonGroup;
     private javax.swing.JPanel colorsGroupPanel;
     private javax.swing.JPanel colorsOptionPanel;
     private javax.swing.JPanel colorsPanel;
     private javax.swing.JToggleButton dotButton;
+    private p4.MyCanvas drawMyCanvas;
     private javax.swing.JMenu editTopMenu;
     private javax.swing.JToggleButton ellipseButton;
     private javax.swing.ButtonGroup figuresButtonGroup;
     private javax.swing.JPanel figuresPanel;
     private javax.swing.JMenu fileTopMenu;
     private javax.swing.JCheckBox fillCheckBox;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JToggleButton jToggleButton3;
-    private javax.swing.JToggleButton jToggleButton4;
-    private javax.swing.JToggleButton jToggleButton5;
-    private javax.swing.JToggleButton jToggleButton6;
+    private javax.swing.JToggleButton greenToggleButton;
     private javax.swing.JToggleButton lineButton;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuItem newMenuItem;
     private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JToggleButton redToggleButton;
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JMenuItem showMenuItem;
     private javax.swing.JToggleButton squareButton;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JMenuBar topMenuBar;
+    private javax.swing.JToggleButton whiteToggleButton;
+    private javax.swing.JToggleButton yellowToggleButton;
     // End of variables declaration//GEN-END:variables
 }
