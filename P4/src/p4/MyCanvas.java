@@ -11,6 +11,8 @@ import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 import p4.MainWindow.FIGURE_TYPE;
 
@@ -18,7 +20,7 @@ import p4.MainWindow.FIGURE_TYPE;
  *
  * @author jacortes
  */
-public class MyCanvas extends JPanel implements MouseListener {
+public class MyCanvas extends JPanel implements MouseListener, MouseMotionListener {
 
     private Color activeColor;
     private MyFigure activeFigure = new MyFigure();
@@ -75,21 +77,43 @@ public class MyCanvas extends JPanel implements MouseListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (activeType != null) {
+            g.setColor(activeColor);
+            int width, height;
             switch (activeType) {
                 case OVAL:
-                    g.setColor(activeColor);
+
                     if (isFilled) {
                         g.fillOval(activeFigure.getStart().x - 5, activeFigure.getStart().y - 5, 10, 10);
+
                     } else {
                         g.drawOval(activeFigure.getStart().x - 5, activeFigure.getStart().y - 5, 10, 10);
                     }
+                    break;
                 case SQUARE:
-                    g.setColor(activeColor);
+                    width = activeFigure.getFinish().x - activeFigure.getStart().x;
+                    height = activeFigure.getFinish().y - activeFigure.getStart().y;
                     if (isFilled) {
-                        g.fillRect(activeFigure.getStart().x - 5, activeFigure.getStart().y - 5, activeFigure.getFinish().x - 5, activeFigure.getFinish().y - 5);
+                        g.fillRect(activeFigure.getStart().x, activeFigure.getStart().y, width, height);
+
                     } else {
-                        g.drawRect(activeFigure.getStart().x - 5, activeFigure.getStart().y - 5, activeFigure.getFinish().x - 5, activeFigure.getFinish().y - 5);
+                        g.drawRect(activeFigure.getStart().x, activeFigure.getStart().y, width, height);
+
                     }
+                    break;
+                case CIRCLE:
+                    width = activeFigure.getFinish().x - activeFigure.getStart().x;
+                    height = activeFigure.getFinish().y - activeFigure.getStart().y;
+                    if (isFilled) {
+                        g.fillOval(activeFigure.getStart().x, activeFigure.getStart().y, width, height);
+
+                    } else {
+                        g.drawOval(activeFigure.getStart().x, activeFigure.getStart().y, width, height);
+
+                    }
+                    break;
+                case LINE:
+                    g.drawLine(activeFigure.getStart().x, activeFigure.getStart().y, activeFigure.getFinish().x, activeFigure.getFinish().y);
+                    break;
             }
         }
     }
@@ -97,43 +121,39 @@ public class MyCanvas extends JPanel implements MouseListener {
     @Override
     public void mousePressed(java.awt.event.MouseEvent e) {
         System.out.println("Mouse pressed.");
-        switch (activeType) {
-            case SQUARE:
-                activeFigure.setStart(e.getPoint());
-                this.repaint();
-        }
-
+        activeFigure.setStart(e.getPoint());
     }
 
     @Override
     public void mouseReleased(java.awt.event.MouseEvent e) {
         System.out.println("Mouse released.");
-        switch (activeType) {
-            case SQUARE:
-                activeFigure.setFinish(e.getPoint());
-                this.repaint();
-        }
+        activeFigure.setFinish(e.getPoint());
+        this.repaint();
     }
 
     @Override
     public void mouseEntered(java.awt.event.MouseEvent e) {
-        System.out.println("Ratón pulsado.");
+        System.out.println("Mouse entered.");
     }
 
     @Override
     public void mouseExited(java.awt.event.MouseEvent e) {
-        System.out.println("Ratón pulsado.");
+        System.out.println("Mouse exited.");
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("Mouse clicked.");
-        switch (activeType) {
-            case OVAL:
-                activeFigure.setStart(e.getPoint());
-                activeFigure.setFinish(e.getPoint());
-                this.repaint();
-        }
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        // activeFigure.setFinish(e.getPoint());
+        //this.repaint();
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
 
     }
 

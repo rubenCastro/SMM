@@ -310,7 +310,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_lineButtonActionPerformed
 
     private void ellipseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ellipseButtonActionPerformed
-        statusLabel.setText("CIRCLE");
+        statusLabel.setText("Circle");
         drawMyCanvas.setActiveType(FIGURE_TYPE.CIRCLE);
         drawMyCanvas.getActiveFigure().setType(FIGURE_TYPE.CIRCLE);
     }//GEN-LAST:event_ellipseButtonActionPerformed
