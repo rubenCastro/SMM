@@ -116,6 +116,8 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
 
     @Override
     public void mousePressed(java.awt.event.MouseEvent e) {
+        width = 0;
+        height = 0;
         activeFigure.setStart(e.getPoint());
         dragStart = e.getPoint();
     }

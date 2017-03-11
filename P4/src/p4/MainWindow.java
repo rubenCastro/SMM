@@ -5,7 +5,9 @@
  */
 package p4;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics;
 
 /**
  *
@@ -196,7 +198,9 @@ public class MainWindow extends javax.swing.JFrame {
         statusPanel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         statusPanel.setLayout(new java.awt.BorderLayout());
 
-        statusLabel.setText("Status label");
+        statusLabel.setText("Waiting...");
+        statusLabel.setOpaque(true);
+        statusLabel.setPreferredSize(new java.awt.Dimension(20, 20));
         statusPanel.add(statusLabel, java.awt.BorderLayout.PAGE_END);
 
         bottomPanel.add(statusPanel, java.awt.BorderLayout.SOUTH);
@@ -210,6 +214,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         newMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         newMenuItem.setText("New");
+        newMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newMenuItemActionPerformed(evt);
+            }
+        });
         fileTopMenu.add(newMenuItem);
 
         openMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
@@ -249,9 +258,12 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void showMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showMenuItemActionPerformed
-        // TODO add your handling code here:
+        if (statusPanel.isVisible()) {
+            statusPanel.setVisible(false);
+        } else {
+            statusPanel.setVisible(true);
+        }
     }//GEN-LAST:event_showMenuItemActionPerformed
-
     private void blueToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blueToggleButtonActionPerformed
         drawMyCanvas.setActiveColor(Color.BLUE);
         drawMyCanvas.getActiveFigure().setColor(Color.BLUE);
@@ -315,6 +327,10 @@ public class MainWindow extends javax.swing.JFrame {
         drawMyCanvas.setActiveType(FIGURE_TYPE.CIRCLE);
         drawMyCanvas.getActiveFigure().setType(FIGURE_TYPE.CIRCLE);
     }//GEN-LAST:event_ellipseButtonActionPerformed
+
+    private void newMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuItemActionPerformed
+       
+    }//GEN-LAST:event_newMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
