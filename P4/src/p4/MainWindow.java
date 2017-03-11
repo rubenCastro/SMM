@@ -20,6 +20,7 @@ public class MainWindow extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         drawMyCanvas.addMouseListener(drawMyCanvas);
+        drawMyCanvas.addMouseMotionListener(drawMyCanvas);
     }
 
     protected enum FIGURE_TYPE {
