@@ -152,9 +152,12 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
                 activeFigure.setStart(new Point(minX, minY));
                 width = maxX - minX;
                 height = maxY - minY;
-                this.repaint();
+                break;
+            case LINE:
+                activeFigure.setFinish(e.getPoint());
                 break;
         }
+        this.repaint();
     }
 
     @Override
