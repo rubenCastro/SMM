@@ -78,7 +78,7 @@ public class MyCanvas extends JPanel implements MouseListener, MouseMotionListen
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (activeType != null) {
+        if (activeType != null && activeFigure.getStart() != null) {
             g.setColor(activeColor);
             switch (activeType) {
                 case OVAL:

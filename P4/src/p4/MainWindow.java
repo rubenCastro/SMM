@@ -329,7 +329,9 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_ellipseButtonActionPerformed
 
     private void newMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuItemActionPerformed
-       
+        drawMyCanvas.setActiveFigure(new MyFigure());
+        drawMyCanvas.repaint();
+        drawMyCanvas.revalidate();
     }//GEN-LAST:event_newMenuItemActionPerformed
 
     /**
