@@ -6,6 +6,7 @@
 package p7;
 
 import javax.swing.SpinnerNumberModel;
+import sm.jaci.ui.MyInternalFrame;
 
 /**
  *
@@ -172,6 +173,11 @@ public class MainWindow extends javax.swing.JFrame {
         fileMenu.setText("File");
 
         newMenuItem.setText("New");
+        newMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(newMenuItem);
 
         openMenuItem.setText("Open");
@@ -185,12 +191,27 @@ public class MainWindow extends javax.swing.JFrame {
         editMenu.setText("Edit");
 
         statusMenuItem.setText("Show status bar");
+        statusMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statusMenuItemActionPerformed(evt);
+            }
+        });
         editMenu.add(statusMenuItem);
 
         figuresMenuItem.setText("Show figures bar");
+        figuresMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                figuresMenuItemActionPerformed(evt);
+            }
+        });
         editMenu.add(figuresMenuItem);
 
         attributesMenuItem.setText("Show attributes bar");
+        attributesMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                attributesMenuItemActionPerformed(evt);
+            }
+        });
         editMenu.add(attributesMenuItem);
 
         topMenuBar.add(editMenu);
@@ -199,6 +220,36 @@ public class MainWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void newMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuItemActionPerformed
+        MyInternalFrame mif = new MyInternalFrame();
+        canvasDesktopPanel.add(mif);
+        mif.setVisible(true);
+    }//GEN-LAST:event_newMenuItemActionPerformed
+
+    private void statusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusMenuItemActionPerformed
+        if (statusPanel.isVisible()) {
+            statusPanel.setVisible(false);
+        } else {
+            statusPanel.setVisible(true);
+        }
+    }//GEN-LAST:event_statusMenuItemActionPerformed
+
+    private void figuresMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_figuresMenuItemActionPerformed
+        if (figuresToolBar.isVisible()) {
+            figuresToolBar.setVisible(false);
+        } else {
+            figuresToolBar.setVisible(true);
+        }
+    }//GEN-LAST:event_figuresMenuItemActionPerformed
+
+    private void attributesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attributesMenuItemActionPerformed
+        if (bottomToolBar.isVisible()) {
+            bottomToolBar.setVisible(false);
+        } else {
+            bottomToolBar.setVisible(true);
+        }
+    }//GEN-LAST:event_attributesMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alphaCheckBox;
