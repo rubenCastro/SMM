@@ -6,6 +6,7 @@
 package p7;
 
 import javax.swing.SpinnerNumberModel;
+import sm.jaci.ui.FigureTypes;
 import sm.jaci.ui.MyInternalFrame;
 
 /**
@@ -32,6 +33,8 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        figuresButtonGroup = new javax.swing.ButtonGroup();
+        colorsButtonGroup = new javax.swing.ButtonGroup();
         figuresToolBar = new javax.swing.JToolBar();
         dotToggleButton = new javax.swing.JToggleButton();
         lineToggleButton = new javax.swing.JToggleButton();
@@ -72,28 +75,52 @@ public class MainWindow extends javax.swing.JFrame {
 
         figuresToolBar.setRollover(true);
 
+        figuresButtonGroup.add(dotToggleButton);
         dotToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/punto.png"))); // NOI18N
         dotToggleButton.setFocusable(false);
         dotToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         dotToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        dotToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dotToggleButtonActionPerformed(evt);
+            }
+        });
         figuresToolBar.add(dotToggleButton);
 
+        figuresButtonGroup.add(lineToggleButton);
         lineToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/linea.png"))); // NOI18N
         lineToggleButton.setFocusable(false);
         lineToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lineToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lineToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lineToggleButtonActionPerformed(evt);
+            }
+        });
         figuresToolBar.add(lineToggleButton);
 
+        figuresButtonGroup.add(rectanbleToggleButton);
         rectanbleToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/rectangulo.png"))); // NOI18N
         rectanbleToggleButton.setFocusable(false);
         rectanbleToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rectanbleToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        rectanbleToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rectanbleToggleButtonActionPerformed(evt);
+            }
+        });
         figuresToolBar.add(rectanbleToggleButton);
 
+        figuresButtonGroup.add(ellipseToggleButton);
         ellipseToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/elipse.png"))); // NOI18N
         ellipseToggleButton.setFocusable(false);
         ellipseToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ellipseToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ellipseToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ellipseToggleButtonActionPerformed(evt);
+            }
+        });
         figuresToolBar.add(ellipseToggleButton);
 
         getContentPane().add(figuresToolBar, java.awt.BorderLayout.NORTH);
@@ -116,27 +143,33 @@ public class MainWindow extends javax.swing.JFrame {
         colorsPanel.setLayout(new java.awt.GridLayout(2, 3, 1, 1));
 
         blackToggleButton.setBackground(java.awt.Color.black);
+        colorsButtonGroup.add(blackToggleButton);
         blackToggleButton.setMaximumSize(new java.awt.Dimension(34, 34));
         blackToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
         colorsPanel.add(blackToggleButton);
 
         redToggleButton.setBackground(java.awt.Color.red);
+        colorsButtonGroup.add(redToggleButton);
         redToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
         colorsPanel.add(redToggleButton);
 
         blueToggleButton.setBackground(java.awt.Color.blue);
+        colorsButtonGroup.add(blueToggleButton);
         blueToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
         colorsPanel.add(blueToggleButton);
 
         whiteToggleButton.setBackground(java.awt.Color.white);
+        colorsButtonGroup.add(whiteToggleButton);
         whiteToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
         colorsPanel.add(whiteToggleButton);
 
         yellowToggleButton.setBackground(java.awt.Color.yellow);
+        colorsButtonGroup.add(yellowToggleButton);
         yellowToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
         colorsPanel.add(yellowToggleButton);
 
         greenToggleButton.setBackground(java.awt.Color.green);
+        colorsButtonGroup.add(greenToggleButton);
         greenToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
         colorsPanel.add(greenToggleButton);
 
@@ -153,6 +186,11 @@ public class MainWindow extends javax.swing.JFrame {
         optionsPanel.setLayout(new java.awt.GridLayout(2, 2));
 
         filledCheckBox.setText("Filled");
+        filledCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filledCheckBoxActionPerformed(evt);
+            }
+        });
         optionsPanel.add(filledCheckBox);
 
         smoothCheckBox.setText("Smooth");
@@ -251,6 +289,50 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_attributesMenuItemActionPerformed
 
+    private void dotToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dotToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            mif.getCanvas2d().setFigureType(FigureTypes.DOT);
+        }
+    }//GEN-LAST:event_dotToggleButtonActionPerformed
+
+    private void lineToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lineToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            mif.getCanvas2d().setFigureType(FigureTypes.LINE);
+        }
+    }//GEN-LAST:event_lineToggleButtonActionPerformed
+
+    private void rectanbleToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rectanbleToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            mif.getCanvas2d().setFigureType(FigureTypes.RECTANGLE);
+        }
+    }//GEN-LAST:event_rectanbleToggleButtonActionPerformed
+
+    private void ellipseToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ellipseToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            mif.getCanvas2d().setFigureType(FigureTypes.ELLIPSE);
+        }
+    }//GEN-LAST:event_ellipseToggleButtonActionPerformed
+
+    private void filledCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filledCheckBoxActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            if (filledCheckBox.isSelected()) {
+                mif.getCanvas2d().setFilled(true);
+            } else {
+                mif.getCanvas2d().setFilled(false);
+            }
+        }
+    }//GEN-LAST:event_filledCheckBoxActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alphaCheckBox;
     private javax.swing.JMenuItem attributesMenuItem;
@@ -259,11 +341,13 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JToolBar bottomToolBar;
     private javax.swing.JDesktopPane canvasDesktopPanel;
+    private javax.swing.ButtonGroup colorsButtonGroup;
     private javax.swing.JPanel colorsPanel;
     private javax.swing.JToggleButton dotToggleButton;
     private javax.swing.JCheckBox editCheckBox;
     private javax.swing.JMenu editMenu;
     private javax.swing.JToggleButton ellipseToggleButton;
+    private javax.swing.ButtonGroup figuresButtonGroup;
     private javax.swing.JMenuItem figuresMenuItem;
     private javax.swing.JToolBar figuresToolBar;
     private javax.swing.JMenu fileMenu;
