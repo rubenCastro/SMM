@@ -20,7 +20,17 @@ public class MyInternalFrame extends JInternalFrame {
         this.setResizable(true);
         this.setIconifiable(true);
         this.setMaximizable(true);
+        this.setSize(400, 300);
         this.canvas2d = new MyCanvas2D();
+        this.add(canvas2d);
+    }
+
+    public MyCanvas2D getCanvas2d() {
+        return canvas2d;
+    }
+
+    public void setCanvas2d(MyCanvas2D canvas2d) {
+        this.canvas2d = canvas2d;
     }
 
 }
