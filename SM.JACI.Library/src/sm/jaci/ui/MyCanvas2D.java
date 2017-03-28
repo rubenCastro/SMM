@@ -5,7 +5,6 @@
  */
 package sm.jaci.ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -25,15 +24,12 @@ import javax.swing.JPanel;
 public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionListener {
 
     ArrayList<Shape> figuresList;
-    Color active_color;
-    Boolean filled = false;
-    FigureTypes figureType;
-    Double alpha;
-    Boolean aliasing;
-    Boolean edit = false;
+    CanvasParameters parameters;
+
     Point startingPoint;
 
     public MyCanvas2D() {
+        parameters = new CanvasParameters();
         this.figuresList = new ArrayList<>();
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
@@ -43,9 +39,9 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setPaint(active_color);
+        g2d.setPaint(parameters.getActive_color());
         for (Shape s : figuresList) {
-            if (filled) {
+            if (parameters.getFilled()) {
                 g2d.fill(s);
             }
             g2d.draw(s);
@@ -55,10 +51,18 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
     }
 
     private void createShape(Point2D p) {
-        switch (figureType) {
+        switch (parameters.getFigureType()) {
             case RECTANGLE:
                 figuresList.add(new Rectangle(startingPoint));
         }
+    }
+
+    public CanvasParameters getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(CanvasParameters parameters) {
+        this.parameters = parameters;
     }
 
     @Override
@@ -86,7 +90,7 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (edit) {
+        if (parameters.getEdit()) {
         } else {
             ((Rectangle) figuresList.get(figuresList.size() - 1)).setFrameFromDiagonal(startingPoint, e.getPoint());
         }
@@ -104,53 +108,4 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
     public void setFiguresList(ArrayList<Shape> figuresList) {
         this.figuresList = figuresList;
     }
-
-    public Color getActive_color() {
-        return active_color;
-    }
-
-    public void setActive_color(Color active_color) {
-        this.active_color = active_color;
-    }
-
-    public Boolean getFilled() {
-        return filled;
-    }
-
-    public void setFilled(Boolean filled) {
-        this.filled = filled;
-    }
-
-    public FigureTypes getFigureType() {
-        return figureType;
-    }
-
-    public void setFigureType(FigureTypes figureType) {
-        this.figureType = figureType;
-    }
-
-    public Double getAlpha() {
-        return alpha;
-    }
-
-    public void setAlpha(Double alpha) {
-        this.alpha = alpha;
-    }
-
-    public Boolean getAliasing() {
-        return aliasing;
-    }
-
-    public void setAliasing(Boolean aliasing) {
-        this.aliasing = aliasing;
-    }
-
-    public Boolean getEdit() {
-        return edit;
-    }
-
-    public void setEdit(Boolean edit) {
-        this.edit = edit;
-    }
-
 }
