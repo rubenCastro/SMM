@@ -13,7 +13,8 @@ import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.Point2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.RectangularShape;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -25,8 +26,8 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
 
     ArrayList<Shape> figuresList;
     CanvasParameters parameters;
-
     Point startingPoint;
+    Point finishPoint;
 
     public MyCanvas2D() {
         parameters = new CanvasParameters();
@@ -46,14 +47,32 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
             }
             g2d.draw(s);
         }
-        g2d.draw(new Rectangle(100, 100));
         repaint();
     }
 
-    private void createShape(Point2D p) {
+    private void createShape(Point startingPoint) {
+        Shape s = null;
         switch (parameters.getFigureType()) {
+            case DOT:
+                //Line2D Better
+                s = new Ellipse2D.Float(startingPoint.x - 5, startingPoint.y - 5, 5, 5);
+                break;
             case RECTANGLE:
-                figuresList.add(new Rectangle(startingPoint));
+                s = new Rectangle(startingPoint);
+                break;
+            case LINE:
+                break;
+            case ELLIPSE:
+                s = new Ellipse2D.Float(startingPoint.x, startingPoint.y, 0, 0);
+                break;
+        }
+        figuresList.add(s);
+    }
+
+    private void updateShape(Point startingPoint, Point finishPoint) {
+        Shape s = figuresList.get(figuresList.size() - 1);
+        if (s instanceof RectangularShape) {
+            ((RectangularShape) s).setFrameFromDiagonal(startingPoint, finishPoint);
         }
     }
 
@@ -72,6 +91,7 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void mousePressed(MouseEvent e) {
+        finishPoint = null;
         startingPoint = e.getPoint();
         createShape(startingPoint);
     }
@@ -92,7 +112,8 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
     public void mouseDragged(MouseEvent e) {
         if (parameters.getEdit()) {
         } else {
-            ((Rectangle) figuresList.get(figuresList.size() - 1)).setFrameFromDiagonal(startingPoint, e.getPoint());
+            finishPoint = e.getPoint();
+            updateShape(startingPoint, finishPoint);
         }
         repaint();
     }
