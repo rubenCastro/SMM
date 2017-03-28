@@ -5,7 +5,9 @@
  */
 package p7;
 
+import java.awt.Color;
 import javax.swing.SpinnerNumberModel;
+import sm.jaci.ui.CanvasParameters;
 import sm.jaci.ui.FigureTypes;
 import sm.jaci.ui.MyInternalFrame;
 
@@ -14,6 +16,8 @@ import sm.jaci.ui.MyInternalFrame;
  * @author jacortes
  */
 public class MainWindow extends javax.swing.JFrame {
+
+    CanvasParameters currentParameters = new CanvasParameters();
 
     /**
      * Creates new form MainWindow
@@ -146,31 +150,61 @@ public class MainWindow extends javax.swing.JFrame {
         colorsButtonGroup.add(blackToggleButton);
         blackToggleButton.setMaximumSize(new java.awt.Dimension(34, 34));
         blackToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
+        blackToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blackToggleButtonActionPerformed(evt);
+            }
+        });
         colorsPanel.add(blackToggleButton);
 
         redToggleButton.setBackground(java.awt.Color.red);
         colorsButtonGroup.add(redToggleButton);
         redToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
+        redToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                redToggleButtonActionPerformed(evt);
+            }
+        });
         colorsPanel.add(redToggleButton);
 
         blueToggleButton.setBackground(java.awt.Color.blue);
         colorsButtonGroup.add(blueToggleButton);
         blueToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
+        blueToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blueToggleButtonActionPerformed(evt);
+            }
+        });
         colorsPanel.add(blueToggleButton);
 
         whiteToggleButton.setBackground(java.awt.Color.white);
         colorsButtonGroup.add(whiteToggleButton);
         whiteToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
+        whiteToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                whiteToggleButtonActionPerformed(evt);
+            }
+        });
         colorsPanel.add(whiteToggleButton);
 
         yellowToggleButton.setBackground(java.awt.Color.yellow);
         colorsButtonGroup.add(yellowToggleButton);
         yellowToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
+        yellowToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yellowToggleButtonActionPerformed(evt);
+            }
+        });
         colorsPanel.add(yellowToggleButton);
 
         greenToggleButton.setBackground(java.awt.Color.green);
         colorsButtonGroup.add(greenToggleButton);
         greenToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
+        greenToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                greenToggleButtonActionPerformed(evt);
+            }
+        });
         colorsPanel.add(greenToggleButton);
 
         bottomToolBar.add(colorsPanel);
@@ -194,12 +228,27 @@ public class MainWindow extends javax.swing.JFrame {
         optionsPanel.add(filledCheckBox);
 
         smoothCheckBox.setText("Smooth");
+        smoothCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                smoothCheckBoxActionPerformed(evt);
+            }
+        });
         optionsPanel.add(smoothCheckBox);
 
         alphaCheckBox.setText("Alpha");
+        alphaCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alphaCheckBoxActionPerformed(evt);
+            }
+        });
         optionsPanel.add(alphaCheckBox);
 
         editCheckBox.setText("Edit");
+        editCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editCheckBoxActionPerformed(evt);
+            }
+        });
         optionsPanel.add(editCheckBox);
 
         bottomToolBar.add(optionsPanel);
@@ -261,6 +310,18 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void newMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuItemActionPerformed
         MyInternalFrame mif = new MyInternalFrame();
+        if (canvasDesktopPanel.getAllFrames().length != 0) {
+            CanvasParameters currentParametersAux = new CanvasParameters();
+            currentParametersAux.setActive_color(currentParameters.getActive_color());
+            currentParametersAux.setFigureType(currentParameters.getFigureType());
+            currentParametersAux.setThickness(currentParameters.getThickness());
+            currentParametersAux.setAlpha(currentParameters.getAlpha());
+            currentParametersAux.setFilled(currentParameters.getFilled());
+            currentParametersAux.setAliasing(currentParameters.getAliasing());
+            currentParametersAux.setEdit(currentParameters.getEdit());
+            mif.getCanvas2d().setParameters(currentParametersAux);
+        }
+
         canvasDesktopPanel.add(mif);
         mif.setVisible(true);
     }//GEN-LAST:event_newMenuItemActionPerformed
@@ -293,7 +354,8 @@ public class MainWindow extends javax.swing.JFrame {
         MyInternalFrame mif;
         mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
         if (mif != null) {
-            mif.getCanvas2d().setFigureType(FigureTypes.DOT);
+            currentParameters.setFigureType(FigureTypes.DOT);
+            mif.getCanvas2d().getParameters().setFigureType(FigureTypes.DOT);
         }
     }//GEN-LAST:event_dotToggleButtonActionPerformed
 
@@ -301,7 +363,8 @@ public class MainWindow extends javax.swing.JFrame {
         MyInternalFrame mif;
         mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
         if (mif != null) {
-            mif.getCanvas2d().setFigureType(FigureTypes.LINE);
+            currentParameters.setFigureType(FigureTypes.LINE);
+            mif.getCanvas2d().getParameters().setFigureType(FigureTypes.LINE);
         }
     }//GEN-LAST:event_lineToggleButtonActionPerformed
 
@@ -309,7 +372,8 @@ public class MainWindow extends javax.swing.JFrame {
         MyInternalFrame mif;
         mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
         if (mif != null) {
-            mif.getCanvas2d().setFigureType(FigureTypes.RECTANGLE);
+            currentParameters.setFigureType(FigureTypes.RECTANGLE);
+            mif.getCanvas2d().getParameters().setFigureType(FigureTypes.RECTANGLE);
         }
     }//GEN-LAST:event_rectanbleToggleButtonActionPerformed
 
@@ -317,7 +381,8 @@ public class MainWindow extends javax.swing.JFrame {
         MyInternalFrame mif;
         mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
         if (mif != null) {
-            mif.getCanvas2d().setFigureType(FigureTypes.ELLIPSE);
+            currentParameters.setFigureType(FigureTypes.ELLIPSE);
+            mif.getCanvas2d().getParameters().setFigureType(FigureTypes.ELLIPSE);
         }
     }//GEN-LAST:event_ellipseToggleButtonActionPerformed
 
@@ -326,12 +391,80 @@ public class MainWindow extends javax.swing.JFrame {
         mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
         if (mif != null) {
             if (filledCheckBox.isSelected()) {
-                mif.getCanvas2d().setFilled(true);
+                currentParameters.setFilled(true);
+                mif.getCanvas2d().getParameters().setFilled(true);
             } else {
-                mif.getCanvas2d().setFilled(false);
+                currentParameters.setFilled(false);
+                mif.getCanvas2d().getParameters().setFilled(false);
             }
         }
     }//GEN-LAST:event_filledCheckBoxActionPerformed
+
+    private void redToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            currentParameters.setActive_color(Color.RED);
+            mif.getCanvas2d().getParameters().setActive_color(Color.RED);
+        }
+    }//GEN-LAST:event_redToggleButtonActionPerformed
+
+    private void blueToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blueToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            currentParameters.setActive_color(Color.BLUE);
+            mif.getCanvas2d().getParameters().setActive_color(Color.BLUE);
+        }
+    }//GEN-LAST:event_blueToggleButtonActionPerformed
+
+    private void whiteToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_whiteToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            currentParameters.setActive_color(Color.WHITE);
+            mif.getCanvas2d().getParameters().setActive_color(Color.WHITE);
+        }
+    }//GEN-LAST:event_whiteToggleButtonActionPerformed
+
+    private void yellowToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yellowToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            currentParameters.setActive_color(Color.YELLOW);
+            mif.getCanvas2d().getParameters().setActive_color(Color.YELLOW);
+        }
+    }//GEN-LAST:event_yellowToggleButtonActionPerformed
+
+    private void greenToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_greenToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            currentParameters.setActive_color(Color.GREEN);
+            mif.getCanvas2d().getParameters().setActive_color(Color.GREEN);
+        }
+    }//GEN-LAST:event_greenToggleButtonActionPerformed
+
+    private void blackToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blackToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            currentParameters.setActive_color(Color.BLACK);
+            mif.getCanvas2d().getParameters().setActive_color(Color.BLACK);
+        }
+    }//GEN-LAST:event_blackToggleButtonActionPerformed
+
+    private void smoothCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smoothCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_smoothCheckBoxActionPerformed
+
+    private void alphaCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alphaCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_alphaCheckBoxActionPerformed
+
+    private void editCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCheckBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editCheckBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alphaCheckBox;
