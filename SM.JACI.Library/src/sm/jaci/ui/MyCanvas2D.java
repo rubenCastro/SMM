@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -42,6 +43,12 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(parameters.getThickness()));
+        if (parameters.getAliasing()) {
+            RenderingHints rh = new RenderingHints(
+                    RenderingHints.KEY_TEXT_ANTIALIASING,
+                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g2d.setRenderingHints(rh);
+        }
         g2d.setPaint(parameters.getActive_color());
         for (Shape s : figuresList) {
             if (parameters.getFilled()) {

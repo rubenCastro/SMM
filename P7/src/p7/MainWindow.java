@@ -461,7 +461,15 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_blackToggleButtonActionPerformed
 
     private void smoothCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smoothCheckBoxActionPerformed
-        // TODO add your handling code here:
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            if (smoothCheckBox.isSelected()) {
+                currentParameters.setAliasing(true);
+                mif.getCanvas2d().getParameters().setAliasing(true);
+            }
+
+        }
     }//GEN-LAST:event_smoothCheckBoxActionPerformed
 
     private void alphaCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alphaCheckBoxActionPerformed
