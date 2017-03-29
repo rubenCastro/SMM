@@ -467,13 +467,27 @@ public class MainWindow extends javax.swing.JFrame {
             if (smoothCheckBox.isSelected()) {
                 currentParameters.setAliasing(true);
                 mif.getCanvas2d().getParameters().setAliasing(true);
+            } else {
+                currentParameters.setAliasing(false);
+                mif.getCanvas2d().getParameters().setAliasing(false);
             }
 
         }
     }//GEN-LAST:event_smoothCheckBoxActionPerformed
 
     private void alphaCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alphaCheckBoxActionPerformed
-        // TODO add your handling code here:
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            if (alphaCheckBox.isSelected()) {
+                currentParameters.setAlpha(true);
+                mif.getCanvas2d().getParameters().setAlpha(true);
+            } else {
+                currentParameters.setAlpha(false);
+                mif.getCanvas2d().getParameters().setAlpha(false);
+            }
+
+        }
     }//GEN-LAST:event_alphaCheckBoxActionPerformed
 
     private void editCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCheckBoxActionPerformed

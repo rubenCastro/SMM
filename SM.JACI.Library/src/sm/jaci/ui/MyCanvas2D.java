@@ -5,6 +5,7 @@
  */
 package sm.jaci.ui;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -48,6 +49,9 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
                     RenderingHints.KEY_TEXT_ANTIALIASING,
                     RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             g2d.setRenderingHints(rh);
+        }
+        if (parameters.getAlpha()) {
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
         }
         g2d.setPaint(parameters.getActive_color());
         for (Shape s : figuresList) {
