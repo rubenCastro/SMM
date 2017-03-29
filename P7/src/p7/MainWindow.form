@@ -367,6 +367,9 @@
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
               <SubComponents>
                 <Component class="javax.swing.JSpinner" name="thicknessSpinner">
+                  <Events>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="thicknessSpinnerStateChanged"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

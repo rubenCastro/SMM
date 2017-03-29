@@ -211,6 +211,12 @@ public class MainWindow extends javax.swing.JFrame {
 
         thicknessPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Thickness"));
         thicknessPanel.setPreferredSize(new java.awt.Dimension(120, 100));
+
+        thicknessSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                thicknessSpinnerStateChanged(evt);
+            }
+        });
         thicknessPanel.add(thicknessSpinner);
 
         bottomToolBar.add(thicknessPanel);
@@ -465,6 +471,16 @@ public class MainWindow extends javax.swing.JFrame {
     private void editCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCheckBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_editCheckBoxActionPerformed
+
+    private void thicknessSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_thicknessSpinnerStateChanged
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            Integer thickness = Integer.parseInt(thicknessSpinner.getModel().getValue().toString());
+            currentParameters.setThickness(thickness);
+            mif.getCanvas2d().getParameters().setThickness(thickness);
+        }
+    }//GEN-LAST:event_thicknessSpinnerStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox alphaCheckBox;

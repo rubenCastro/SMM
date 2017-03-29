@@ -5,6 +5,7 @@
  */
 package sm.jaci.ui;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -40,6 +41,7 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setStroke(new BasicStroke(parameters.getThickness()));
         g2d.setPaint(parameters.getActive_color());
         for (Shape s : figuresList) {
             if (parameters.getFilled()) {
