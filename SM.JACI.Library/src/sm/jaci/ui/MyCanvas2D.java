@@ -17,9 +17,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import sm.jaci.graphics.MyLine2D;
 
 /**
  *
@@ -31,6 +34,7 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
     CanvasParameters parameters;
     Point startingPoint;
     Point finishPoint;
+    Shape grabbed_s;
 
     public MyCanvas2D() {
         parameters = new CanvasParameters();
@@ -63,17 +67,38 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
         repaint();
     }
 
+    private Shape getSelectedShape(Point startinPoint) {
+        for (Shape s : figuresList) {
+            if (s.contains(startingPoint)) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    private void setLocation(Shape s, Point newPosition) {
+        if (s instanceof Rectangle) {
+            ((Rectangle) s).setLocation(newPosition);
+        }
+        if (s instanceof Ellipse2D) {
+            Shape sAux;
+            sAux = s.getBounds();
+            ((Rectangle) sAux).setLocation(newPosition);
+            ((Ellipse2D) s).setFrame((Rectangle2D) sAux);
+        }
+    }
+
     private void createShape(Point startingPoint) {
         Shape s = null;
         switch (parameters.getFigureType()) {
             case DOT:
-                //Line2D Better
-                s = new Ellipse2D.Float(startingPoint.x - 5, startingPoint.y - 5, 5, 5);
+                s = new Line2D.Float(startingPoint.x - 5, startingPoint.y - 5, startingPoint.x - 5, startingPoint.y - 5);
                 break;
             case RECTANGLE:
                 s = new Rectangle(startingPoint);
                 break;
             case LINE:
+                s = new MyLine2D();
                 break;
             case ELLIPSE:
                 s = new Ellipse2D.Float(startingPoint.x, startingPoint.y, 0, 0);
@@ -106,11 +131,16 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
     public void mousePressed(MouseEvent e) {
         finishPoint = null;
         startingPoint = e.getPoint();
-        createShape(startingPoint);
+        if (parameters.getEdit()) {
+            grabbed_s = getSelectedShape(startingPoint);
+        } else {
+            createShape(startingPoint);
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        this.mouseDragged(e);
     }
 
     @Override
@@ -123,9 +153,10 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        finishPoint = e.getPoint();
         if (parameters.getEdit()) {
+            setLocation(grabbed_s, finishPoint);
         } else {
-            finishPoint = e.getPoint();
             updateShape(startingPoint, finishPoint);
         }
         repaint();

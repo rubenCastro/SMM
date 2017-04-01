@@ -491,7 +491,17 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_alphaCheckBoxActionPerformed
 
     private void editCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCheckBoxActionPerformed
-        // TODO add your handling code here:
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            if (editCheckBox.isSelected()) {
+                currentParameters.setEdit(true);
+                mif.getCanvas2d().getParameters().setEdit(true);
+            } else {
+                currentParameters.setEdit(false);
+                mif.getCanvas2d().getParameters().setEdit(false);
+            }
+        }
     }//GEN-LAST:event_editCheckBoxActionPerformed
 
     private void thicknessSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_thicknessSpinnerStateChanged
