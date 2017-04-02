@@ -50,8 +50,8 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
         g2d.setStroke(new BasicStroke(parameters.getThickness()));
         if (parameters.getAliasing()) {
             RenderingHints rh = new RenderingHints(
-                    RenderingHints.KEY_TEXT_ANTIALIASING,
-                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                    RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setRenderingHints(rh);
         }
         if (parameters.getAlpha()) {
