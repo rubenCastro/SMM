@@ -86,6 +86,9 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
             ((Rectangle) sAux).setLocation(newPosition);
             ((Ellipse2D) s).setFrame((Rectangle2D) sAux);
         }
+        if (s instanceof MyLine2D) {
+            ((MyLine2D) s).setLocation(newPosition);
+        }
     }
 
     private void createShape(Point startingPoint) {
@@ -98,7 +101,7 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
                 s = new Rectangle(startingPoint);
                 break;
             case LINE:
-                s = new MyLine2D();
+                s = new MyLine2D(startingPoint, startingPoint);
                 break;
             case ELLIPSE:
                 s = new Ellipse2D.Float(startingPoint.x, startingPoint.y, 0, 0);
@@ -111,6 +114,9 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
         Shape s = figuresList.get(figuresList.size() - 1);
         if (s instanceof RectangularShape) {
             ((RectangularShape) s).setFrameFromDiagonal(startingPoint, finishPoint);
+        }
+        if (s instanceof MyLine2D) {
+            ((MyLine2D) s).setLine(startingPoint, finishPoint);
         }
     }
 
