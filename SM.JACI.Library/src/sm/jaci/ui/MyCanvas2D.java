@@ -17,7 +17,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.util.ArrayList;
@@ -95,7 +94,7 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
         Shape s = null;
         switch (parameters.getFigureType()) {
             case DOT:
-                s = new Line2D.Float(startingPoint.x - 5, startingPoint.y - 5, startingPoint.x - 5, startingPoint.y - 5);
+                s = new MyLine2D.Float(startingPoint, startingPoint);
                 break;
             case RECTANGLE:
                 s = new Rectangle(startingPoint);
