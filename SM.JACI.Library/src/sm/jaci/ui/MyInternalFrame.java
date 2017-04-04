@@ -6,6 +6,7 @@
 package sm.jaci.ui;
 
 import javax.swing.JInternalFrame;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -13,7 +14,8 @@ import javax.swing.JInternalFrame;
  */
 public class MyInternalFrame extends JInternalFrame {
 
-    MyCanvas2D canvas2d;
+    MyCanvas2DImage canvas2d;
+    JScrollPane scroll;
 
     public MyInternalFrame() {
         this.setClosable(true);
@@ -21,15 +23,17 @@ public class MyInternalFrame extends JInternalFrame {
         this.setIconifiable(true);
         this.setMaximizable(true);
         this.setSize(400, 300);
-        this.canvas2d = new MyCanvas2D();
-        this.add(canvas2d);
+        this.canvas2d = new MyCanvas2DImage();
+        this.scroll = new JScrollPane();
+        scroll.setViewportView(canvas2d);
+        this.add(scroll);
     }
 
-    public MyCanvas2D getCanvas2d() {
+    public MyCanvas2DImage getCanvas2d() {
         return canvas2d;
     }
 
-    public void setCanvas2d(MyCanvas2D canvas2d) {
+    public void setCanvas2dImage(MyCanvas2DImage canvas2d) {
         this.canvas2d = canvas2d;
     }
 

@@ -43,8 +43,8 @@ public class MyCanvas2D extends JPanel implements MouseListener, MouseMotionList
     }
 
     @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void paint(Graphics g) {
+        super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(parameters.getThickness()));
         if (parameters.getAliasing()) {
