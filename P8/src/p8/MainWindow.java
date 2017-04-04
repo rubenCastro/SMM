@@ -555,7 +555,7 @@ public class MainWindow extends javax.swing.JFrame {
             int resp = dlg.showSaveDialog(this);
             if (resp == JFileChooser.APPROVE_OPTION) {
                 try {
-                    BufferedImage img = vi.getCanvas2d().getImage();
+                    BufferedImage img = vi.getCanvas2d().getImage(true);
                     if (img != null) {
                         File f = dlg.getSelectedFile();
                         ImageIO.write(img, "jpg", f);
