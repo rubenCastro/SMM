@@ -24,6 +24,16 @@ public class MyCanvas2DImage extends MyCanvas2D {
         }
     }
 
+    public BufferedImage getImage(boolean drawVector) {
+        if (drawVector) {
+            BufferedImage finalImg = new BufferedImage(img.getWidth(), img.getHeight(), img.getType());
+            this.paint(finalImg.createGraphics());
+            return finalImg;
+        } else {
+            return getImage();
+        }
+    }
+
     public BufferedImage getImage() {
         return img;
     }
