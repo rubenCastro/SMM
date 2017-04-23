@@ -17,6 +17,7 @@ public class MyCanvas2DImage extends MyCanvas2D {
 
     BufferedImage img;
 
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (img != null) {
