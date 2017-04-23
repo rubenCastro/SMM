@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package p9;
+package p10;
 
 import java.awt.Color;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.io.File;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.SpinnerNumberModel;
@@ -46,30 +48,46 @@ public class MainWindow extends javax.swing.JFrame {
         figuresButtonGroup = new javax.swing.ButtonGroup();
         colorsButtonGroup = new javax.swing.ButtonGroup();
         figuresToolBar = new javax.swing.JToolBar();
+        newButton = new javax.swing.JButton();
+        openButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
         dotToggleButton = new javax.swing.JToggleButton();
         lineToggleButton = new javax.swing.JToggleButton();
         rectanbleToggleButton = new javax.swing.JToggleButton();
         ellipseToggleButton = new javax.swing.JToggleButton();
-        jSlider1 = new javax.swing.JSlider();
+        jToggleButton4 = new javax.swing.JToggleButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        colorsComboBox = new javax.swing.JComboBox<>();
+        jSeparator4 = new javax.swing.JToolBar.Separator();
+        thicknessSpinner = new javax.swing.JSpinner();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
+        fillToggleButton = new javax.swing.JToggleButton();
+        alphaToggleButton = new javax.swing.JToggleButton();
+        smoothToggleButton = new javax.swing.JToggleButton();
         canvasDesktopPanel = new javax.swing.JDesktopPane();
         bottomPanel = new javax.swing.JPanel();
         statusPanel = new javax.swing.JPanel();
         statusLabel = new javax.swing.JLabel();
         bottomToolBar = new javax.swing.JToolBar();
-        colorsPanel = new javax.swing.JPanel();
-        blackToggleButton = new javax.swing.JToggleButton();
-        redToggleButton = new javax.swing.JToggleButton();
-        blueToggleButton = new javax.swing.JToggleButton();
-        whiteToggleButton = new javax.swing.JToggleButton();
-        yellowToggleButton = new javax.swing.JToggleButton();
-        greenToggleButton = new javax.swing.JToggleButton();
-        thicknessPanel = new javax.swing.JPanel();
-        thicknessSpinner = new javax.swing.JSpinner();
-        optionsPanel = new javax.swing.JPanel();
-        filledCheckBox = new javax.swing.JCheckBox();
-        smoothCheckBox = new javax.swing.JCheckBox();
-        alphaCheckBox = new javax.swing.JCheckBox();
-        editCheckBox = new javax.swing.JCheckBox();
+        brightnessPanel = new javax.swing.JPanel();
+        jSlider1 = new javax.swing.JSlider();
+        filtersPanel = new javax.swing.JPanel();
+        filtersComboBox = new javax.swing.JComboBox<>();
+        contrastPanel = new javax.swing.JPanel();
+        normalContrastButton = new javax.swing.JButton();
+        lightContrastButton = new javax.swing.JButton();
+        darkContrastButton = new javax.swing.JButton();
+        functionPanel = new javax.swing.JPanel();
+        sinButton = new javax.swing.JButton();
+        rotationPanel = new javax.swing.JPanel();
+        rotationSlider = new javax.swing.JSlider();
+        r90Button = new javax.swing.JButton();
+        r180Button = new javax.swing.JButton();
+        r270Button = new javax.swing.JButton();
+        scalePanel = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         topMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newMenuItem = new javax.swing.JMenuItem();
@@ -85,6 +103,39 @@ public class MainWindow extends javax.swing.JFrame {
         setTitle("Basic 2D Paint");
 
         figuresToolBar.setRollover(true);
+
+        newButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/nuevo.png"))); // NOI18N
+        newButton.setFocusable(false);
+        newButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        newButton.setMaximumSize(new java.awt.Dimension(36, 36));
+        newButton.setMinimumSize(new java.awt.Dimension(36, 36));
+        newButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        newButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newButtonActionPerformed(evt);
+            }
+        });
+        figuresToolBar.add(newButton);
+
+        openButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/abrir.png"))); // NOI18N
+        openButton.setFocusable(false);
+        openButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        openButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        openButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openButtonActionPerformed(evt);
+            }
+        });
+        figuresToolBar.add(openButton);
+
+        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/guardar.png"))); // NOI18N
+        saveButton.setFocusable(false);
+        saveButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saveButton.setMaximumSize(new java.awt.Dimension(36, 36));
+        saveButton.setMinimumSize(new java.awt.Dimension(36, 36));
+        saveButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        figuresToolBar.add(saveButton);
+        figuresToolBar.add(jSeparator1);
 
         figuresButtonGroup.add(dotToggleButton);
         dotToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/punto.png"))); // NOI18N
@@ -134,14 +185,64 @@ public class MainWindow extends javax.swing.JFrame {
         });
         figuresToolBar.add(ellipseToggleButton);
 
-        jSlider1.setMaximum(255);
-        jSlider1.setMinimum(-255);
-        jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSlider1StateChanged(evt);
+        jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/seleccion.png"))); // NOI18N
+        jToggleButton4.setFocusable(false);
+        jToggleButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        figuresToolBar.add(jToggleButton4);
+        figuresToolBar.add(jSeparator2);
+
+        colorsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Black", "White", "Red", "Yellow", "Blue", "Green" }));
+        colorsComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorsComboBoxActionPerformed(evt);
             }
         });
-        figuresToolBar.add(jSlider1);
+        figuresToolBar.add(colorsComboBox);
+        figuresToolBar.add(jSeparator4);
+
+        thicknessSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                thicknessSpinnerStateChanged(evt);
+            }
+        });
+        figuresToolBar.add(thicknessSpinner);
+        figuresToolBar.add(jSeparator3);
+
+        fillToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/rellenar.png"))); // NOI18N
+        fillToggleButton.setFocusable(false);
+        fillToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        fillToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        fillToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fillToggleButtonActionPerformed(evt);
+            }
+        });
+        figuresToolBar.add(fillToggleButton);
+
+        alphaToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/transparencia.png"))); // NOI18N
+        alphaToggleButton.setFocusable(false);
+        alphaToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        alphaToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        alphaToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alphaToggleButtonActionPerformed(evt);
+            }
+        });
+        figuresToolBar.add(alphaToggleButton);
+
+        smoothToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/alisar.png"))); // NOI18N
+        smoothToggleButton.setFocusable(false);
+        smoothToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        smoothToggleButton.setMaximumSize(new java.awt.Dimension(36, 36));
+        smoothToggleButton.setMinimumSize(new java.awt.Dimension(36, 36));
+        smoothToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        smoothToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                smoothToggleButtonActionPerformed(evt);
+            }
+        });
+        figuresToolBar.add(smoothToggleButton);
 
         getContentPane().add(figuresToolBar, java.awt.BorderLayout.NORTH);
 
@@ -161,122 +262,76 @@ public class MainWindow extends javax.swing.JFrame {
 
         bottomToolBar.setRollover(true);
 
-        colorsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Colors"));
-        colorsPanel.setPreferredSize(new java.awt.Dimension(120, 100));
-        colorsPanel.setLayout(new java.awt.GridLayout(2, 3, 1, 1));
+        brightnessPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Brightness"));
+        brightnessPanel.setPreferredSize(new java.awt.Dimension(120, 100));
+        brightnessPanel.setLayout(new java.awt.GridLayout(2, 3, 1, 1));
 
-        blackToggleButton.setBackground(java.awt.Color.black);
-        colorsButtonGroup.add(blackToggleButton);
-        blackToggleButton.setMaximumSize(new java.awt.Dimension(34, 34));
-        blackToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
-        blackToggleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                blackToggleButtonActionPerformed(evt);
-            }
-        });
-        colorsPanel.add(blackToggleButton);
-
-        redToggleButton.setBackground(java.awt.Color.red);
-        colorsButtonGroup.add(redToggleButton);
-        redToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
-        redToggleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                redToggleButtonActionPerformed(evt);
-            }
-        });
-        colorsPanel.add(redToggleButton);
-
-        blueToggleButton.setBackground(java.awt.Color.blue);
-        colorsButtonGroup.add(blueToggleButton);
-        blueToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
-        blueToggleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                blueToggleButtonActionPerformed(evt);
-            }
-        });
-        colorsPanel.add(blueToggleButton);
-
-        whiteToggleButton.setBackground(java.awt.Color.white);
-        colorsButtonGroup.add(whiteToggleButton);
-        whiteToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
-        whiteToggleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                whiteToggleButtonActionPerformed(evt);
-            }
-        });
-        colorsPanel.add(whiteToggleButton);
-
-        yellowToggleButton.setBackground(java.awt.Color.yellow);
-        colorsButtonGroup.add(yellowToggleButton);
-        yellowToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
-        yellowToggleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                yellowToggleButtonActionPerformed(evt);
-            }
-        });
-        colorsPanel.add(yellowToggleButton);
-
-        greenToggleButton.setBackground(java.awt.Color.green);
-        colorsButtonGroup.add(greenToggleButton);
-        greenToggleButton.setPreferredSize(new java.awt.Dimension(34, 34));
-        greenToggleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                greenToggleButtonActionPerformed(evt);
-            }
-        });
-        colorsPanel.add(greenToggleButton);
-
-        bottomToolBar.add(colorsPanel);
-
-        thicknessPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Thickness"));
-        thicknessPanel.setPreferredSize(new java.awt.Dimension(120, 100));
-
-        thicknessSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+        jSlider1.setMaximum(255);
+        jSlider1.setMinimum(-255);
+        jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                thicknessSpinnerStateChanged(evt);
+                jSlider1StateChanged(evt);
             }
         });
-        thicknessPanel.add(thicknessSpinner);
+        brightnessPanel.add(jSlider1);
 
-        bottomToolBar.add(thicknessPanel);
+        bottomToolBar.add(brightnessPanel);
 
-        optionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
-        optionsPanel.setPreferredSize(new java.awt.Dimension(200, 100));
-        optionsPanel.setLayout(new java.awt.GridLayout(2, 2));
+        filtersPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Filters"));
+        filtersPanel.setPreferredSize(new java.awt.Dimension(120, 100));
 
-        filledCheckBox.setText("Filled");
-        filledCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filledCheckBoxActionPerformed(evt);
-            }
-        });
-        optionsPanel.add(filledCheckBox);
+        filtersComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Media", "Binomial", "Enfoque", "Relieve", "Fronteras" }));
+        filtersPanel.add(filtersComboBox);
 
-        smoothCheckBox.setText("Smooth");
-        smoothCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                smoothCheckBoxActionPerformed(evt);
-            }
-        });
-        optionsPanel.add(smoothCheckBox);
+        bottomToolBar.add(filtersPanel);
 
-        alphaCheckBox.setText("Alpha");
-        alphaCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                alphaCheckBoxActionPerformed(evt);
-            }
-        });
-        optionsPanel.add(alphaCheckBox);
+        contrastPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Contrast"));
+        contrastPanel.setPreferredSize(new java.awt.Dimension(200, 100));
 
-        editCheckBox.setText("Edit");
-        editCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editCheckBoxActionPerformed(evt);
-            }
-        });
-        optionsPanel.add(editCheckBox);
+        normalContrastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/contraste.png"))); // NOI18N
+        contrastPanel.add(normalContrastButton);
 
-        bottomToolBar.add(optionsPanel);
+        lightContrastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/iluminar.png"))); // NOI18N
+        contrastPanel.add(lightContrastButton);
+
+        darkContrastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/oscurecer.png"))); // NOI18N
+        contrastPanel.add(darkContrastButton);
+
+        bottomToolBar.add(contrastPanel);
+
+        functionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Function"));
+        functionPanel.setPreferredSize(new java.awt.Dimension(120, 100));
+
+        sinButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/sinusoidal.png"))); // NOI18N
+        functionPanel.add(sinButton);
+
+        bottomToolBar.add(functionPanel);
+
+        rotationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Rotation"));
+        rotationPanel.setPreferredSize(new java.awt.Dimension(220, 100));
+        rotationPanel.add(rotationSlider);
+
+        r90Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/rotacion90.png"))); // NOI18N
+        rotationPanel.add(r90Button);
+
+        r180Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/rotacion180.png"))); // NOI18N
+        rotationPanel.add(r180Button);
+
+        r270Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/rotacion270.png"))); // NOI18N
+        rotationPanel.add(r270Button);
+
+        bottomToolBar.add(rotationPanel);
+
+        scalePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Scale"));
+        scalePanel.setPreferredSize(new java.awt.Dimension(130, 100));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/aumentar.png"))); // NOI18N
+        scalePanel.add(jButton1);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/disminuir.png"))); // NOI18N
+        scalePanel.add(jButton2);
+
+        bottomToolBar.add(scalePanel);
 
         bottomPanel.add(bottomToolBar, java.awt.BorderLayout.CENTER);
 
@@ -431,118 +486,6 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ellipseToggleButtonActionPerformed
 
-    private void filledCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filledCheckBoxActionPerformed
-        MyInternalFrame mif;
-        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
-        if (mif != null) {
-            if (filledCheckBox.isSelected()) {
-                currentParameters.setFilled(true);
-                mif.getCanvas2d().getParameters().setFilled(true);
-            } else {
-                currentParameters.setFilled(false);
-                mif.getCanvas2d().getParameters().setFilled(false);
-            }
-        }
-    }//GEN-LAST:event_filledCheckBoxActionPerformed
-
-    private void redToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redToggleButtonActionPerformed
-        MyInternalFrame mif;
-        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
-        if (mif != null) {
-            currentParameters.setActive_color(Color.RED);
-            mif.getCanvas2d().getParameters().setActive_color(Color.RED);
-        }
-    }//GEN-LAST:event_redToggleButtonActionPerformed
-
-    private void blueToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blueToggleButtonActionPerformed
-        MyInternalFrame mif;
-        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
-        if (mif != null) {
-            currentParameters.setActive_color(Color.BLUE);
-            mif.getCanvas2d().getParameters().setActive_color(Color.BLUE);
-        }
-    }//GEN-LAST:event_blueToggleButtonActionPerformed
-
-    private void whiteToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_whiteToggleButtonActionPerformed
-        MyInternalFrame mif;
-        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
-        if (mif != null) {
-            currentParameters.setActive_color(Color.WHITE);
-            mif.getCanvas2d().getParameters().setActive_color(Color.WHITE);
-        }
-    }//GEN-LAST:event_whiteToggleButtonActionPerformed
-
-    private void yellowToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yellowToggleButtonActionPerformed
-        MyInternalFrame mif;
-        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
-        if (mif != null) {
-            currentParameters.setActive_color(Color.YELLOW);
-            mif.getCanvas2d().getParameters().setActive_color(Color.YELLOW);
-        }
-    }//GEN-LAST:event_yellowToggleButtonActionPerformed
-
-    private void greenToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_greenToggleButtonActionPerformed
-        MyInternalFrame mif;
-        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
-        if (mif != null) {
-            currentParameters.setActive_color(Color.GREEN);
-            mif.getCanvas2d().getParameters().setActive_color(Color.GREEN);
-        }
-    }//GEN-LAST:event_greenToggleButtonActionPerformed
-
-    private void blackToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blackToggleButtonActionPerformed
-        MyInternalFrame mif;
-        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
-        if (mif != null) {
-            currentParameters.setActive_color(Color.BLACK);
-            mif.getCanvas2d().getParameters().setActive_color(Color.BLACK);
-        }
-    }//GEN-LAST:event_blackToggleButtonActionPerformed
-
-    private void smoothCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smoothCheckBoxActionPerformed
-        MyInternalFrame mif;
-        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
-        if (mif != null) {
-            if (smoothCheckBox.isSelected()) {
-                currentParameters.setAliasing(true);
-                mif.getCanvas2d().getParameters().setAliasing(true);
-            } else {
-                currentParameters.setAliasing(false);
-                mif.getCanvas2d().getParameters().setAliasing(false);
-            }
-
-        }
-    }//GEN-LAST:event_smoothCheckBoxActionPerformed
-
-    private void alphaCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alphaCheckBoxActionPerformed
-        MyInternalFrame mif;
-        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
-        if (mif != null) {
-            if (alphaCheckBox.isSelected()) {
-                currentParameters.setAlpha(true);
-                mif.getCanvas2d().getParameters().setAlpha(true);
-            } else {
-                currentParameters.setAlpha(false);
-                mif.getCanvas2d().getParameters().setAlpha(false);
-            }
-
-        }
-    }//GEN-LAST:event_alphaCheckBoxActionPerformed
-
-    private void editCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCheckBoxActionPerformed
-        MyInternalFrame mif;
-        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
-        if (mif != null) {
-            if (editCheckBox.isSelected()) {
-                currentParameters.setEdit(true);
-                mif.getCanvas2d().getParameters().setEdit(true);
-            } else {
-                currentParameters.setEdit(false);
-                mif.getCanvas2d().getParameters().setEdit(false);
-            }
-        }
-    }//GEN-LAST:event_editCheckBoxActionPerformed
-
     private void thicknessSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_thicknessSpinnerStateChanged
         MyInternalFrame mif;
         mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
@@ -629,43 +572,159 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jSlider1StateChanged
 
+    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+        MyInternalFrame mif = new MyInternalFrame();
+        if (canvasDesktopPanel.getAllFrames().length != 0) {
+            CanvasParameters currentParametersAux = new CanvasParameters();
+            currentParametersAux.setActive_color(currentParameters.getActive_color());
+            currentParametersAux.setFigureType(currentParameters.getFigureType());
+            currentParametersAux.setThickness(currentParameters.getThickness());
+            currentParametersAux.setAlpha(currentParameters.getAlpha());
+            currentParametersAux.setFilled(currentParameters.getFilled());
+            currentParametersAux.setAliasing(currentParameters.getAliasing());
+            currentParametersAux.setEdit(currentParameters.getEdit());
+            mif.getCanvas2d().setParameters(currentParametersAux);
+        }
+        BufferedImage img;
+        img = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+        img.createGraphics().setPaint(Color.white);
+        img.createGraphics().fill(new Rectangle2D.Float(0.0f, 0.0f, img.getWidth(), img.getHeight()));
+        mif.getCanvas2d().setImage(img);
+        canvasDesktopPanel.add(mif);
+        mif.setVisible(true);
+    }//GEN-LAST:event_newButtonActionPerformed
+
+    private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
+        JFileChooser dlg = new JFileChooser();
+        int resp = dlg.showOpenDialog(this);
+        if (resp == JFileChooser.APPROVE_OPTION) {
+            try {
+                File f = dlg.getSelectedFile();
+                BufferedImage img = ImageIO.read(f);
+                MyInternalFrame mif = new MyInternalFrame();
+                mif.getCanvas2d().setImage(img);
+                this.canvasDesktopPanel.add(mif);
+                mif.setTitle(f.getName());
+                mif.setVisible(true);
+            } catch (Exception ex) {
+                System.err.println("Error al leer la imagen");
+            }
+        }
+    }//GEN-LAST:event_openButtonActionPerformed
+
+    private void fillToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            if (fillToggleButton.isSelected()) {
+                currentParameters.setFilled(true);
+                mif.getCanvas2d().getParameters().setFilled(true);
+            } else {
+                currentParameters.setFilled(false);
+                mif.getCanvas2d().getParameters().setFilled(false);
+            }
+        }
+    }//GEN-LAST:event_fillToggleButtonActionPerformed
+
+    private void alphaToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alphaToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            if (alphaToggleButton.isSelected()) {
+                currentParameters.setAlpha(true);
+                mif.getCanvas2d().getParameters().setAlpha(true);
+            } else {
+                currentParameters.setAlpha(false);
+                mif.getCanvas2d().getParameters().setAlpha(false);
+            }
+
+        }
+    }//GEN-LAST:event_alphaToggleButtonActionPerformed
+
+    private void smoothToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smoothToggleButtonActionPerformed
+        MyInternalFrame mif;
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            if (smoothToggleButton.isSelected()) {
+                currentParameters.setAliasing(true);
+                mif.getCanvas2d().getParameters().setAliasing(true);
+            } else {
+                currentParameters.setAliasing(false);
+                mif.getCanvas2d().getParameters().setAliasing(false);
+            }
+
+        }
+    }//GEN-LAST:event_smoothToggleButtonActionPerformed
+
+    private void colorsComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorsComboBoxActionPerformed
+        MyInternalFrame mif;
+        ArrayList<Color> coloursList = new ArrayList<>();
+        coloursList.add(Color.BLACK);
+        coloursList.add(Color.WHITE);
+        coloursList.add(Color.RED);
+        coloursList.add(Color.YELLOW);
+        coloursList.add(Color.BLUE);
+        coloursList.add(Color.GREEN);
+        mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            currentParameters.setActive_color(coloursList.get(colorsComboBox.getSelectedIndex()));
+            mif.getCanvas2d().getParameters().setActive_color(coloursList.get(colorsComboBox.getSelectedIndex()));
+        }
+    }//GEN-LAST:event_colorsComboBoxActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox alphaCheckBox;
+    private javax.swing.JToggleButton alphaToggleButton;
     private javax.swing.JMenuItem attributesMenuItem;
-    private javax.swing.JToggleButton blackToggleButton;
-    private javax.swing.JToggleButton blueToggleButton;
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JToolBar bottomToolBar;
+    private javax.swing.JPanel brightnessPanel;
     private javax.swing.JDesktopPane canvasDesktopPanel;
     private javax.swing.ButtonGroup colorsButtonGroup;
-    private javax.swing.JPanel colorsPanel;
+    private javax.swing.JComboBox<String> colorsComboBox;
+    private javax.swing.JPanel contrastPanel;
+    private javax.swing.JButton darkContrastButton;
     private javax.swing.JToggleButton dotToggleButton;
-    private javax.swing.JCheckBox editCheckBox;
     private javax.swing.JMenu editMenu;
     private javax.swing.JToggleButton ellipseToggleButton;
     private javax.swing.ButtonGroup figuresButtonGroup;
     private javax.swing.JMenuItem figuresMenuItem;
     private javax.swing.JToolBar figuresToolBar;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JCheckBox filledCheckBox;
-    private javax.swing.JToggleButton greenToggleButton;
+    private javax.swing.JToggleButton fillToggleButton;
+    private javax.swing.JComboBox<String> filtersComboBox;
+    private javax.swing.JPanel filtersPanel;
+    private javax.swing.JPanel functionPanel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
+    private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JSlider jSlider1;
+    private javax.swing.JToggleButton jToggleButton4;
+    private javax.swing.JButton lightContrastButton;
     private javax.swing.JToggleButton lineToggleButton;
+    private javax.swing.JButton newButton;
     private javax.swing.JMenuItem newMenuItem;
+    private javax.swing.JButton normalContrastButton;
+    private javax.swing.JButton openButton;
     private javax.swing.JMenuItem openMenuItem;
-    private javax.swing.JPanel optionsPanel;
+    private javax.swing.JButton r180Button;
+    private javax.swing.JButton r270Button;
+    private javax.swing.JButton r90Button;
     private javax.swing.JToggleButton rectanbleToggleButton;
-    private javax.swing.JToggleButton redToggleButton;
     private javax.swing.JMenuItem rescaleMenuItem;
+    private javax.swing.JPanel rotationPanel;
+    private javax.swing.JSlider rotationSlider;
+    private javax.swing.JButton saveButton;
     private javax.swing.JMenuItem saveMenuItem;
-    private javax.swing.JCheckBox smoothCheckBox;
+    private javax.swing.JPanel scalePanel;
+    private javax.swing.JButton sinButton;
+    private javax.swing.JToggleButton smoothToggleButton;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JMenuItem statusMenuItem;
     private javax.swing.JPanel statusPanel;
-    private javax.swing.JPanel thicknessPanel;
     private javax.swing.JSpinner thicknessSpinner;
     private javax.swing.JMenuBar topMenuBar;
-    private javax.swing.JToggleButton whiteToggleButton;
-    private javax.swing.JToggleButton yellowToggleButton;
     // End of variables declaration//GEN-END:variables
 }
