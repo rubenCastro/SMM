@@ -404,13 +404,14 @@
                 <Property name="verticalGap" type="int" value="1"/>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JSlider" name="jSlider1">
+                <Component class="javax.swing.JSlider" name="brightSlider">
                   <Properties>
                     <Property name="maximum" type="int" value="255"/>
                     <Property name="minimum" type="int" value="-255"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSlider1StateChanged"/>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="brightSliderStateChanged"/>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="brightSliderFocusLost"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -467,6 +468,9 @@
                       <Image iconType="3" name="/p10/contraste.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="normalContrastButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="lightContrastButton">
                   <Properties>
@@ -474,6 +478,9 @@
                       <Image iconType="3" name="/p10/iluminar.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lightContrastButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="darkContrastButton">
                   <Properties>
@@ -481,6 +488,9 @@
                       <Image iconType="3" name="/p10/oscurecer.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="darkContrastButtonActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

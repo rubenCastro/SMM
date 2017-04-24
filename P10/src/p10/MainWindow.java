@@ -8,12 +8,15 @@ package p10;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.LookupOp;
+import java.awt.image.LookupTable;
 import java.awt.image.RescaleOp;
 import java.io.File;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.SpinnerNumberModel;
+import sm.image.LookupTableProducer;
 import sm.jaci.ui.CanvasParameters;
 import sm.jaci.ui.FigureTypes;
 import sm.jaci.ui.MyInternalFrame;
@@ -71,7 +74,7 @@ public class MainWindow extends javax.swing.JFrame {
         statusLabel = new javax.swing.JLabel();
         bottomToolBar = new javax.swing.JToolBar();
         brightnessPanel = new javax.swing.JPanel();
-        jSlider1 = new javax.swing.JSlider();
+        brightSlider = new javax.swing.JSlider();
         filtersPanel = new javax.swing.JPanel();
         filtersComboBox = new javax.swing.JComboBox<>();
         contrastPanel = new javax.swing.JPanel();
@@ -266,14 +269,19 @@ public class MainWindow extends javax.swing.JFrame {
         brightnessPanel.setPreferredSize(new java.awt.Dimension(120, 100));
         brightnessPanel.setLayout(new java.awt.GridLayout(2, 3, 1, 1));
 
-        jSlider1.setMaximum(255);
-        jSlider1.setMinimum(-255);
-        jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
+        brightSlider.setMaximum(255);
+        brightSlider.setMinimum(-255);
+        brightSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSlider1StateChanged(evt);
+                brightSliderStateChanged(evt);
             }
         });
-        brightnessPanel.add(jSlider1);
+        brightSlider.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                brightSliderFocusLost(evt);
+            }
+        });
+        brightnessPanel.add(brightSlider);
 
         bottomToolBar.add(brightnessPanel);
 
@@ -289,12 +297,27 @@ public class MainWindow extends javax.swing.JFrame {
         contrastPanel.setPreferredSize(new java.awt.Dimension(200, 100));
 
         normalContrastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/contraste.png"))); // NOI18N
+        normalContrastButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                normalContrastButtonActionPerformed(evt);
+            }
+        });
         contrastPanel.add(normalContrastButton);
 
         lightContrastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/iluminar.png"))); // NOI18N
+        lightContrastButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lightContrastButtonActionPerformed(evt);
+            }
+        });
         contrastPanel.add(lightContrastButton);
 
         darkContrastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/oscurecer.png"))); // NOI18N
+        darkContrastButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                darkContrastButtonActionPerformed(evt);
+            }
+        });
         contrastPanel.add(darkContrastButton);
 
         bottomToolBar.add(contrastPanel);
@@ -426,6 +449,22 @@ public class MainWindow extends javax.swing.JFrame {
         mif.setVisible(true);
     }//GEN-LAST:event_newMenuItemActionPerformed
 
+    private void applyLookUpOp(int type) {
+        MyInternalFrame mif = (MyInternalFrame) (canvasDesktopPanel.getSelectedFrame());
+        if (mif != null) {
+            BufferedImage imgSource = mif.getCanvas2d().getImage();
+            if (imgSource != null) {
+                try {
+                    LookupTable lt = LookupTableProducer.createLookupTable(type);
+                    LookupOp lop = new LookupOp(lt, null);
+                    lop.filter(imgSource, imgSource);
+                    mif.repaint();
+                } catch (Exception e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }
     private void statusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusMenuItemActionPerformed
         if (statusPanel.isVisible()) {
             statusPanel.setVisible(false);
@@ -551,7 +590,7 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_rescaleMenuItemActionPerformed
 
-    private void jSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged
+    private void brightSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_brightSliderStateChanged
         if (sourceImage == null) {
             MyInternalFrame mif = (MyInternalFrame) (canvasDesktopPanel.getSelectedFrame());
             sourceImage = mif.getCanvas2d().getImage();
@@ -560,7 +599,7 @@ public class MainWindow extends javax.swing.JFrame {
             if (mif != null) {
                 if (sourceImage != null) {
                     try {
-                        RescaleOp rop = new RescaleOp(1.0F, jSlider1.getValue(), null);
+                        RescaleOp rop = new RescaleOp(1.0F, brightSlider.getValue(), null);
                         BufferedImage imgdest = rop.filter(sourceImage, null);
                         mif.getCanvas2d().setImage(imgdest);
                         mif.getCanvas2d().repaint();
@@ -570,7 +609,7 @@ public class MainWindow extends javax.swing.JFrame {
                 }
             }
         }
-    }//GEN-LAST:event_jSlider1StateChanged
+    }//GEN-LAST:event_brightSliderStateChanged
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         MyInternalFrame mif = new MyInternalFrame();
@@ -672,11 +711,28 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_colorsComboBoxActionPerformed
 
+    private void brightSliderFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_brightSliderFocusLost
+        brightSlider.setValue(0);
+    }//GEN-LAST:event_brightSliderFocusLost
+
+    private void normalContrastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_normalContrastButtonActionPerformed
+        applyLookUpOp(1);
+    }//GEN-LAST:event_normalContrastButtonActionPerformed
+
+    private void lightContrastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lightContrastButtonActionPerformed
+        applyLookUpOp(4);
+    }//GEN-LAST:event_lightContrastButtonActionPerformed
+
+    private void darkContrastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_darkContrastButtonActionPerformed
+        applyLookUpOp(3);
+    }//GEN-LAST:event_darkContrastButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton alphaToggleButton;
     private javax.swing.JMenuItem attributesMenuItem;
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JToolBar bottomToolBar;
+    private javax.swing.JSlider brightSlider;
     private javax.swing.JPanel brightnessPanel;
     private javax.swing.JDesktopPane canvasDesktopPanel;
     private javax.swing.ButtonGroup colorsButtonGroup;
@@ -700,7 +756,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
-    private javax.swing.JSlider jSlider1;
     private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JButton lightContrastButton;
     private javax.swing.JToggleButton lineToggleButton;
