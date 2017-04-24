@@ -10,6 +10,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.ByteLookupTable;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.awt.image.LookupOp;
@@ -558,6 +559,17 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }
     }
+
+    private LookupTable sineFunction(double w) {
+        double K = 255.0 / Math.sin(Math.toRadians(90.0));
+        byte[] lt = new byte[256];
+        for (int i = 0; i <= 255; i++) {
+            lt[i] = (byte) (K * Math.abs(Math.sin(Math.toRadians((double) i * w))));
+        }
+        ByteLookupTable blt = new ByteLookupTable(0, lt);
+        return blt;
+    }
+
     private void statusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusMenuItemActionPerformed
         if (statusPanel.isVisible()) {
             statusPanel.setVisible(false);
@@ -849,13 +861,13 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_minusButtonActionPerformed
 
     private void sinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sinButtonActionPerformed
+
         MyInternalFrame mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
         if (mif != null) {
             BufferedImage imgSource = mif.getCanvas2d().getImage();
             if (imgSource != null) {
                 try {
-                    LookupTable lt = LookupTableProducer.createLookupTable(4);
-                    LookupOp lop = new LookupOp(lt, null);
+                    LookupOp lop = new LookupOp(sineFunction(180.0 / 255.0), null);
                     lop.filter(imgSource, imgSource);
                     mif.repaint();
                 } catch (Exception e) {
