@@ -91,8 +91,8 @@ public class MainWindow extends javax.swing.JFrame {
         r180Button = new javax.swing.JButton();
         r270Button = new javax.swing.JButton();
         scalePanel = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        plusButton = new javax.swing.JButton();
+        minusButton = new javax.swing.JButton();
         topMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newMenuItem = new javax.swing.JMenuItem();
@@ -378,11 +378,21 @@ public class MainWindow extends javax.swing.JFrame {
         scalePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Scale"));
         scalePanel.setPreferredSize(new java.awt.Dimension(130, 100));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/aumentar.png"))); // NOI18N
-        scalePanel.add(jButton1);
+        plusButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/aumentar.png"))); // NOI18N
+        plusButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                plusButtonActionPerformed(evt);
+            }
+        });
+        scalePanel.add(plusButton);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/disminuir.png"))); // NOI18N
-        scalePanel.add(jButton2);
+        minusButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/disminuir.png"))); // NOI18N
+        minusButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                minusButtonActionPerformed(evt);
+            }
+        });
+        scalePanel.add(minusButton);
 
         bottomToolBar.add(scalePanel);
 
@@ -496,7 +506,7 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
 
-    private void applyRotation(double radians, java.awt.image.BufferedImage sourceImg) {
+    private void applyRotation(double radians, BufferedImage sourceImg) {
         MyInternalFrame mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
         if (mif != null) {
             if (sourceImg == null) {
@@ -516,6 +526,25 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
 
+    private void applyScale(double scaleFactor, BufferedImage sourceImg) {
+        MyInternalFrame mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            if (sourceImg == null) {
+                sourceImg = mif.getCanvas2d().getImage();
+            }
+            if (sourceImg != null) {
+                try {
+                    AffineTransform at = AffineTransform.getScaleInstance(scaleFactor, scaleFactor);
+                    AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+                    BufferedImage destImg = op.filter(sourceImg, null);
+                    mif.getCanvas2d().setImage(destImg);
+                    mif.getCanvas2d().repaint();
+                } catch (Exception e) {
+                    System.err.println("Error: " + e.getLocalizedMessage());
+                }
+            }
+        }
+    }
     private void statusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusMenuItemActionPerformed
         if (statusPanel.isVisible()) {
             statusPanel.setVisible(false);
@@ -798,6 +827,14 @@ public class MainWindow extends javax.swing.JFrame {
         rotationSlider.setValue(0);
     }//GEN-LAST:event_rotationSliderFocusLost
 
+    private void plusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plusButtonActionPerformed
+        applyScale(1.25D, null);
+    }//GEN-LAST:event_plusButtonActionPerformed
+
+    private void minusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minusButtonActionPerformed
+        applyScale(0.75D, null);
+    }//GEN-LAST:event_minusButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton alphaToggleButton;
     private javax.swing.JMenuItem attributesMenuItem;
@@ -821,8 +858,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> filtersComboBox;
     private javax.swing.JPanel filtersPanel;
     private javax.swing.JPanel functionPanel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
@@ -830,11 +865,13 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JButton lightContrastButton;
     private javax.swing.JToggleButton lineToggleButton;
+    private javax.swing.JButton minusButton;
     private javax.swing.JButton newButton;
     private javax.swing.JMenuItem newMenuItem;
     private javax.swing.JButton normalContrastButton;
     private javax.swing.JButton openButton;
     private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JButton plusButton;
     private javax.swing.JButton r180Button;
     private javax.swing.JButton r270Button;
     private javax.swing.JButton r90Button;
