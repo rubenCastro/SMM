@@ -532,6 +532,14 @@
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
               <SubComponents>
                 <Component class="javax.swing.JSlider" name="rotationSlider">
+                  <Properties>
+                    <Property name="maximum" type="int" value="360"/>
+                    <Property name="value" type="int" value="180"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="rotationSliderStateChanged"/>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="rotationSliderFocusLost"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="r90Button">
                   <Properties>
@@ -539,6 +547,9 @@
                       <Image iconType="3" name="/p10/rotacion90.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="r90ButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="r180Button">
                   <Properties>
@@ -546,6 +557,9 @@
                       <Image iconType="3" name="/p10/rotacion180.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="r180ButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="r270Button">
                   <Properties>
@@ -553,6 +567,9 @@
                       <Image iconType="3" name="/p10/rotacion270.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="r270ButtonActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

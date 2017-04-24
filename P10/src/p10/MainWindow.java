@@ -6,7 +6,9 @@
 package p10;
 
 import java.awt.Color;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
@@ -332,15 +334,43 @@ public class MainWindow extends javax.swing.JFrame {
 
         rotationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Rotation"));
         rotationPanel.setPreferredSize(new java.awt.Dimension(220, 100));
+
+        rotationSlider.setMaximum(360);
+        rotationSlider.setValue(180);
+        rotationSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                rotationSliderStateChanged(evt);
+            }
+        });
+        rotationSlider.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                rotationSliderFocusLost(evt);
+            }
+        });
         rotationPanel.add(rotationSlider);
 
         r90Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/rotacion90.png"))); // NOI18N
+        r90Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                r90ButtonActionPerformed(evt);
+            }
+        });
         rotationPanel.add(r90Button);
 
         r180Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/rotacion180.png"))); // NOI18N
+        r180Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                r180ButtonActionPerformed(evt);
+            }
+        });
         rotationPanel.add(r180Button);
 
         r270Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/rotacion270.png"))); // NOI18N
+        r270Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                r270ButtonActionPerformed(evt);
+            }
+        });
         rotationPanel.add(r270Button);
 
         bottomToolBar.add(rotationPanel);
@@ -460,11 +490,32 @@ public class MainWindow extends javax.swing.JFrame {
                     lop.filter(imgSource, imgSource);
                     mif.repaint();
                 } catch (Exception e) {
-                    System.err.println(e.getLocalizedMessage());
+                    System.err.println("Error:" + e.getLocalizedMessage());
                 }
             }
         }
     }
+
+    private void applyRotation(double radians, java.awt.image.BufferedImage sourceImg) {
+        MyInternalFrame mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            if (sourceImg == null) {
+                sourceImg = mif.getCanvas2d().getImage();
+            }
+            if (sourceImg != null) {
+                try {
+                    AffineTransform at = AffineTransform.getRotateInstance(radians, sourceImg.getWidth() / 2, sourceImg.getHeight() / 2);
+                    AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+                    BufferedImage destImg = op.filter(sourceImg, null);
+                    mif.getCanvas2d().setImage(destImg);
+                    mif.getCanvas2d().repaint();
+                } catch (Exception e) {
+                    System.err.println("Error: " + e.getLocalizedMessage());
+                }
+            }
+        }
+    }
+
     private void statusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusMenuItemActionPerformed
         if (statusPanel.isVisible()) {
             statusPanel.setVisible(false);
@@ -726,6 +777,26 @@ public class MainWindow extends javax.swing.JFrame {
     private void darkContrastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_darkContrastButtonActionPerformed
         applyLookUpOp(3);
     }//GEN-LAST:event_darkContrastButtonActionPerformed
+
+    private void r90ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r90ButtonActionPerformed
+        applyRotation(Math.toRadians(90.0D), null);
+    }//GEN-LAST:event_r90ButtonActionPerformed
+
+    private void r180ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r180ButtonActionPerformed
+        applyRotation(Math.toRadians(180.0D), null);
+    }//GEN-LAST:event_r180ButtonActionPerformed
+
+    private void r270ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r270ButtonActionPerformed
+        applyRotation(Math.toRadians(270.0D), null);
+    }//GEN-LAST:event_r270ButtonActionPerformed
+
+    private void rotationSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rotationSliderStateChanged
+        applyRotation(Math.toRadians(rotationSlider.getValue()), sourceImage);
+    }//GEN-LAST:event_rotationSliderStateChanged
+
+    private void rotationSliderFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rotationSliderFocusLost
+        rotationSlider.setValue(0);
+    }//GEN-LAST:event_rotationSliderFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton alphaToggleButton;
