@@ -10,6 +10,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
 import java.awt.image.RescaleOp;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.SpinnerNumberModel;
+import sm.image.KernelProducer;
 import sm.image.LookupTableProducer;
 import sm.jaci.ui.CanvasParameters;
 import sm.jaci.ui.FigureTypes;
@@ -291,6 +294,11 @@ public class MainWindow extends javax.swing.JFrame {
         filtersPanel.setPreferredSize(new java.awt.Dimension(120, 100));
 
         filtersComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Media", "Binomial", "Enfoque", "Relieve", "Fronteras" }));
+        filtersComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filtersComboBoxActionPerformed(evt);
+            }
+        });
         filtersPanel.add(filtersComboBox);
 
         bottomToolBar.add(filtersPanel);
@@ -328,6 +336,11 @@ public class MainWindow extends javax.swing.JFrame {
         functionPanel.setPreferredSize(new java.awt.Dimension(120, 100));
 
         sinButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/sinusoidal.png"))); // NOI18N
+        sinButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sinButtonActionPerformed(evt);
+            }
+        });
         functionPanel.add(sinButton);
 
         bottomToolBar.add(functionPanel);
@@ -660,8 +673,8 @@ public class MainWindow extends javax.swing.JFrame {
             if (imgSource != null) {
                 try {
                     RescaleOp rop = new RescaleOp(1.0F, 100.0F, null);
-                    BufferedImage imgdest = rop.filter(imgSource, null);
-                    mif.getCanvas2d().setImage(imgdest);
+                    BufferedImage destImg = rop.filter(imgSource, null);
+                    mif.getCanvas2d().setImage(destImg);
                     mif.getCanvas2d().repaint();
                 } catch (IllegalArgumentException e) {
                     System.err.println(e.getLocalizedMessage());
@@ -680,8 +693,8 @@ public class MainWindow extends javax.swing.JFrame {
                 if (sourceImage != null) {
                     try {
                         RescaleOp rop = new RescaleOp(1.0F, brightSlider.getValue(), null);
-                        BufferedImage imgdest = rop.filter(sourceImage, null);
-                        mif.getCanvas2d().setImage(imgdest);
+                        BufferedImage destImg = rop.filter(sourceImage, null);
+                        mif.getCanvas2d().setImage(destImg);
                         mif.getCanvas2d().repaint();
                     } catch (IllegalArgumentException e) {
                         System.err.println(e.getLocalizedMessage());
@@ -834,6 +847,41 @@ public class MainWindow extends javax.swing.JFrame {
     private void minusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minusButtonActionPerformed
         applyScale(0.75D, null);
     }//GEN-LAST:event_minusButtonActionPerformed
+
+    private void sinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sinButtonActionPerformed
+        MyInternalFrame mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            BufferedImage imgSource = mif.getCanvas2d().getImage();
+            if (imgSource != null) {
+                try {
+                    LookupTable lt = LookupTableProducer.createLookupTable(4);
+                    LookupOp lop = new LookupOp(lt, null);
+                    lop.filter(imgSource, imgSource);
+                    mif.repaint();
+                } catch (Exception e) {
+                    System.err.println("Error: " + e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_sinButtonActionPerformed
+
+    private void filtersComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersComboBoxActionPerformed
+        MyInternalFrame mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            BufferedImage sourceImg = mif.getCanvas2d().getImage();
+            if (sourceImg != null) {
+                try {
+                    Kernel k = KernelProducer.createKernel(filtersComboBox.getSelectedIndex());
+                    ConvolveOp cop = new ConvolveOp(k, 1, null);
+                    BufferedImage destImg = cop.filter(sourceImg, null);
+                    mif.getCanvas2d().setImage(destImg);
+                    mif.getCanvas2d().repaint();
+                } catch (Exception e) {
+                    System.err.println("Error: " + e.getLocalizedMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_filtersComboBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton alphaToggleButton;
