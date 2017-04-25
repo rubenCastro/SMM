@@ -142,6 +142,11 @@ public class MainWindow extends javax.swing.JFrame {
         saveButton.setMaximumSize(new java.awt.Dimension(36, 36));
         saveButton.setMinimumSize(new java.awt.Dimension(36, 36));
         saveButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
         figuresToolBar.add(saveButton);
         figuresToolBar.add(jSeparator1);
 
@@ -893,6 +898,10 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_filtersComboBoxActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        this.saveMenuItemActionPerformed(evt);
+    }//GEN-LAST:event_saveButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton alphaToggleButton;
