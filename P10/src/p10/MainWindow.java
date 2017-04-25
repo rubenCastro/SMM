@@ -55,7 +55,6 @@ public class MainWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         figuresButtonGroup = new javax.swing.ButtonGroup();
-        colorsButtonGroup = new javax.swing.ButtonGroup();
         figuresToolBar = new javax.swing.JToolBar();
         newButton = new javax.swing.JButton();
         openButton = new javax.swing.JButton();
@@ -523,14 +522,14 @@ public class MainWindow extends javax.swing.JFrame {
     private void applyRotation(double radians, BufferedImage sourceImg) {
         MyInternalFrame mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
         if (mif != null) {
-            if (sourceImg == null) {
-                sourceImg = mif.getCanvas2d().getImage();
+            if (sourceImage == null) {
+                sourceImage = mif.getCanvas2d().getImage();
             }
-            if (sourceImg != null) {
+            if (sourceImage != null) {
                 try {
-                    AffineTransform at = AffineTransform.getRotateInstance(radians, sourceImg.getWidth() / 2, sourceImg.getHeight() / 2);
+                    AffineTransform at = AffineTransform.getRotateInstance(radians, sourceImage.getWidth() / 2, sourceImage.getHeight() / 2);
                     AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-                    BufferedImage destImg = op.filter(sourceImg, null);
+                    BufferedImage destImg = op.filter(sourceImage, null);
                     mif.getCanvas2d().setImage(destImg);
                     mif.getCanvas2d().repaint();
                 } catch (Exception e) {
@@ -845,7 +844,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_r270ButtonActionPerformed
 
     private void rotationSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rotationSliderStateChanged
-        applyRotation(Math.toRadians(rotationSlider.getValue()), sourceImage);
+        applyRotation(Math.toRadians(rotationSlider.getValue()), null);
     }//GEN-LAST:event_rotationSliderStateChanged
 
     private void rotationSliderFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rotationSliderFocusLost
@@ -903,7 +902,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JSlider brightSlider;
     private javax.swing.JPanel brightnessPanel;
     private javax.swing.JDesktopPane canvasDesktopPanel;
-    private javax.swing.ButtonGroup colorsButtonGroup;
     private javax.swing.JComboBox<String> colorsComboBox;
     private javax.swing.JPanel contrastPanel;
     private javax.swing.JButton darkContrastButton;

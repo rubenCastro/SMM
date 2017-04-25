@@ -4,8 +4,6 @@
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="figuresButtonGroup">
     </Component>
-    <Component class="javax.swing.ButtonGroup" name="colorsButtonGroup">
-    </Component>
     <Menu class="javax.swing.JMenuBar" name="topMenuBar">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="fileMenu">
