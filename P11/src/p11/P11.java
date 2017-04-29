@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package p10;
+package p11;
 
 /**
  *
  * @author jacortes
  */
-public class P10 {
+public class P11 {
 
     /**
      * @param args the command line arguments

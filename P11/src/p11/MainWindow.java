@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package p10;
+package p11;
 
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
@@ -11,11 +11,13 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.ByteLookupTable;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
 import java.awt.image.RescaleOp;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
@@ -23,6 +25,7 @@ import javax.swing.JFileChooser;
 import javax.swing.SpinnerNumberModel;
 import sm.image.KernelProducer;
 import sm.image.LookupTableProducer;
+import sm.image.color.GreyColorSpace;
 import sm.jaci.ui.CanvasParameters;
 import sm.jaci.ui.FigureTypes;
 import sm.jaci.ui.MyInternalFrame;
@@ -88,6 +91,7 @@ public class MainWindow extends javax.swing.JFrame {
         darkContrastButton = new javax.swing.JButton();
         functionPanel = new javax.swing.JPanel();
         sinButton = new javax.swing.JButton();
+        sepButton = new javax.swing.JButton();
         rotationPanel = new javax.swing.JPanel();
         rotationSlider = new javax.swing.JSlider();
         r90Button = new javax.swing.JButton();
@@ -96,6 +100,9 @@ public class MainWindow extends javax.swing.JFrame {
         scalePanel = new javax.swing.JPanel();
         plusButton = new javax.swing.JButton();
         minusButton = new javax.swing.JButton();
+        colorPanel = new javax.swing.JPanel();
+        bandButton = new javax.swing.JButton();
+        colorSpaceComboBox = new javax.swing.JComboBox<>();
         topMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newMenuItem = new javax.swing.JMenuItem();
@@ -109,10 +116,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Basic 2D Paint");
+        setPreferredSize(new java.awt.Dimension(1200, 900));
 
         figuresToolBar.setRollover(true);
 
-        newButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/nuevo.png"))); // NOI18N
+        newButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/nuevo.png"))); // NOI18N
         newButton.setFocusable(false);
         newButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         newButton.setMaximumSize(new java.awt.Dimension(36, 36));
@@ -125,7 +133,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         figuresToolBar.add(newButton);
 
-        openButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/abrir.png"))); // NOI18N
+        openButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/abrir.png"))); // NOI18N
         openButton.setFocusable(false);
         openButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         openButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -136,7 +144,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         figuresToolBar.add(openButton);
 
-        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/guardar.png"))); // NOI18N
+        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/guardar.png"))); // NOI18N
         saveButton.setFocusable(false);
         saveButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saveButton.setMaximumSize(new java.awt.Dimension(36, 36));
@@ -198,7 +206,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         figuresToolBar.add(ellipseToggleButton);
 
-        jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/seleccion.png"))); // NOI18N
+        jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/seleccion.png"))); // NOI18N
         jToggleButton4.setFocusable(false);
         jToggleButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -222,7 +230,7 @@ public class MainWindow extends javax.swing.JFrame {
         figuresToolBar.add(thicknessSpinner);
         figuresToolBar.add(jSeparator3);
 
-        fillToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/rellenar.png"))); // NOI18N
+        fillToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/rellenar.png"))); // NOI18N
         fillToggleButton.setFocusable(false);
         fillToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         fillToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -233,7 +241,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         figuresToolBar.add(fillToggleButton);
 
-        alphaToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/transparencia.png"))); // NOI18N
+        alphaToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/transparencia.png"))); // NOI18N
         alphaToggleButton.setFocusable(false);
         alphaToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         alphaToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -244,7 +252,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         figuresToolBar.add(alphaToggleButton);
 
-        smoothToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/alisar.png"))); // NOI18N
+        smoothToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/alisar.png"))); // NOI18N
         smoothToggleButton.setFocusable(false);
         smoothToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         smoothToggleButton.setMaximumSize(new java.awt.Dimension(36, 36));
@@ -311,7 +319,7 @@ public class MainWindow extends javax.swing.JFrame {
         contrastPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Contrast"));
         contrastPanel.setPreferredSize(new java.awt.Dimension(200, 100));
 
-        normalContrastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/contraste.png"))); // NOI18N
+        normalContrastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/contraste.png"))); // NOI18N
         normalContrastButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 normalContrastButtonActionPerformed(evt);
@@ -319,7 +327,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         contrastPanel.add(normalContrastButton);
 
-        lightContrastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/iluminar.png"))); // NOI18N
+        lightContrastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/iluminar.png"))); // NOI18N
         lightContrastButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lightContrastButtonActionPerformed(evt);
@@ -327,7 +335,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         contrastPanel.add(lightContrastButton);
 
-        darkContrastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/oscurecer.png"))); // NOI18N
+        darkContrastButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/oscurecer.png"))); // NOI18N
         darkContrastButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 darkContrastButtonActionPerformed(evt);
@@ -338,15 +346,19 @@ public class MainWindow extends javax.swing.JFrame {
         bottomToolBar.add(contrastPanel);
 
         functionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Function"));
-        functionPanel.setPreferredSize(new java.awt.Dimension(120, 100));
+        functionPanel.setPreferredSize(new java.awt.Dimension(160, 100));
 
-        sinButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/sinusoidal.png"))); // NOI18N
+        sinButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/sinusoidal.png"))); // NOI18N
+        sinButton.setPreferredSize(new java.awt.Dimension(58, 34));
         sinButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sinButtonActionPerformed(evt);
             }
         });
         functionPanel.add(sinButton);
+
+        sepButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sepia.png"))); // NOI18N
+        functionPanel.add(sepButton);
 
         bottomToolBar.add(functionPanel);
 
@@ -367,7 +379,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         rotationPanel.add(rotationSlider);
 
-        r90Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/rotacion90.png"))); // NOI18N
+        r90Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/rotacion90.png"))); // NOI18N
         r90Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 r90ButtonActionPerformed(evt);
@@ -375,7 +387,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         rotationPanel.add(r90Button);
 
-        r180Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/rotacion180.png"))); // NOI18N
+        r180Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/rotacion180.png"))); // NOI18N
         r180Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 r180ButtonActionPerformed(evt);
@@ -383,7 +395,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         rotationPanel.add(r180Button);
 
-        r270Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/rotacion270.png"))); // NOI18N
+        r270Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/rotacion270.png"))); // NOI18N
         r270Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 r270ButtonActionPerformed(evt);
@@ -396,7 +408,7 @@ public class MainWindow extends javax.swing.JFrame {
         scalePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Scale"));
         scalePanel.setPreferredSize(new java.awt.Dimension(130, 100));
 
-        plusButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/aumentar.png"))); // NOI18N
+        plusButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/aumentar.png"))); // NOI18N
         plusButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 plusButtonActionPerformed(evt);
@@ -404,7 +416,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         scalePanel.add(plusButton);
 
-        minusButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p10/disminuir.png"))); // NOI18N
+        minusButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p11/disminuir.png"))); // NOI18N
         minusButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 minusButtonActionPerformed(evt);
@@ -413,6 +425,25 @@ public class MainWindow extends javax.swing.JFrame {
         scalePanel.add(minusButton);
 
         bottomToolBar.add(scalePanel);
+
+        colorPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Color Spaces"));
+        colorPanel.setPreferredSize(new java.awt.Dimension(160, 100));
+
+        bandButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/bandas.png"))); // NOI18N
+        bandButton.setFocusable(false);
+        bandButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        bandButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        bandButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bandButtonActionPerformed(evt);
+            }
+        });
+        colorPanel.add(bandButton);
+
+        colorSpaceComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "RGB", "YCC", "GREY" }));
+        colorPanel.add(colorSpaceComboBox);
+
+        bottomToolBar.add(colorPanel);
 
         bottomPanel.add(bottomToolBar, java.awt.BorderLayout.CENTER);
 
@@ -574,6 +605,13 @@ public class MainWindow extends javax.swing.JFrame {
         return blt;
     }
 
+    private BufferedImage getImageBand(BufferedImage sourceImage, int band) {
+        GreyColorSpace cs = new sm.image.color.GreyColorSpace();
+        ComponentColorModel cm = new ComponentColorModel(cs, false, false, 1, 0);
+        int[] bandList = new int[]{band};
+        WritableRaster bandRaster = sourceImage.getRaster().createWritableChild(0, 0, sourceImage.getWidth(), sourceImage.getHeight(), 0, 0, bandList);
+        return new BufferedImage(cm, bandRaster, false, null);
+    }
     private void statusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusMenuItemActionPerformed
         if (statusPanel.isVisible()) {
             statusPanel.setVisible(false);
@@ -903,14 +941,36 @@ public class MainWindow extends javax.swing.JFrame {
         this.saveMenuItemActionPerformed(evt);
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private void bandButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bandButtonActionPerformed
+        MyInternalFrame mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            BufferedImage sourceImg = mif.getCanvas2d().getImage();
+            if (sourceImg != null) {
+                for (int i = 0; i < sourceImg.getRaster().getNumBands(); i++) {
+                    BufferedImage banda = this.getImageBand(sourceImg, i);
+                    MyInternalFrame mifBand = new MyInternalFrame();
+                    mifBand.getCanvas2d().setImage(banda);
+                    mifBand.setLocation(mif.getX() + 50 + i * 50, mif.getY() + 50 + i * 50);
+                    this.canvasDesktopPanel.add(mifBand);
+                    mifBand.setTitle(mifBand.getTitle() + " [Banda " + i + "]");
+                    mifBand.setVisible(true);
+                    repaint();
+                }
+            }
+        }
+    }//GEN-LAST:event_bandButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton alphaToggleButton;
     private javax.swing.JMenuItem attributesMenuItem;
+    private javax.swing.JButton bandButton;
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JToolBar bottomToolBar;
     private javax.swing.JSlider brightSlider;
     private javax.swing.JPanel brightnessPanel;
     private javax.swing.JDesktopPane canvasDesktopPanel;
+    private javax.swing.JPanel colorPanel;
+    private javax.swing.JComboBox<String> colorSpaceComboBox;
     private javax.swing.JComboBox<String> colorsComboBox;
     private javax.swing.JPanel contrastPanel;
     private javax.swing.JButton darkContrastButton;
@@ -949,6 +1009,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton saveButton;
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JPanel scalePanel;
+    private javax.swing.JButton sepButton;
     private javax.swing.JButton sinButton;
     private javax.swing.JToggleButton smoothToggleButton;
     private javax.swing.JLabel statusLabel;
