@@ -6,11 +6,13 @@
 package p11;
 
 import java.awt.Color;
+import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.ByteLookupTable;
+import java.awt.image.ColorConvertOp;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
@@ -447,6 +449,11 @@ public class MainWindow extends javax.swing.JFrame {
         colorPanel.add(bandButton);
 
         colorSpaceComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "RGB", "YCC", "GREY" }));
+        colorSpaceComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorSpaceComboBoxActionPerformed(evt);
+            }
+        });
         colorPanel.add(colorSpaceComboBox);
 
         bottomToolBar.add(colorPanel);
@@ -618,6 +625,44 @@ public class MainWindow extends javax.swing.JFrame {
         WritableRaster bandRaster = sourceImage.getRaster().createWritableChild(0, 0, sourceImage.getWidth(), sourceImage.getHeight(), 0, 0, bandList);
         return new BufferedImage(cm, bandRaster, false, null);
     }
+
+    private void changeColorSpace(int colorSpace) {
+        MyInternalFrame mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            BufferedImage sourceImg = mif.getCanvas2d().getImage();
+            if (sourceImg != null && sourceImg.getColorModel().getColorSpace().isCS_sRGB()) {
+                BufferedImage result;
+                ColorSpace cs = null;
+                switch (colorSpace) {
+                    case 0:
+                        cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
+                        break;
+                    case 1:
+                        cs = ColorSpace.getInstance(ColorSpace.CS_PYCC);
+                        break;
+                    case 2:
+                        cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
+                        break;
+                }
+
+                ColorConvertOp cop = new ColorConvertOp(cs, null);
+                result = cop.filter(sourceImg, null);
+                MyInternalFrame mifColorSpace = new MyInternalFrame();
+                mifColorSpace.getCanvas2d().setImage(result);
+                mifColorSpace.setLocation(mif.getX() + 50, mif.getY() + 50);
+                this.canvasDesktopPanel.add(mifColorSpace);
+                mifColorSpace.setTitle(mif.getTitle());
+                mifColorSpace.setVisible(true);
+                repaint();
+            }
+        }
+    }
+
+    /*if (src.getColorModel().getColorSpace().isCS_sRGB()) {
+ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_PYCC);
+ColorConvertOp cop = new ColorConvertOp(cs, null);
+imgOut = cop.filter(imgSource, null);
+}*/
     private void statusMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusMenuItemActionPerformed
         if (statusPanel.isVisible()) {
             statusPanel.setVisible(false);
@@ -865,7 +910,6 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_colorsComboBoxActionPerformed
 
     private void brightSliderFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_brightSliderFocusLost
-        brightSlider.setValue(0);
     }//GEN-LAST:event_brightSliderFocusLost
 
     private void normalContrastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_normalContrastButtonActionPerformed
@@ -897,7 +941,6 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_rotationSliderStateChanged
 
     private void rotationSliderFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rotationSliderFocusLost
-        rotationSlider.setValue(0);
     }//GEN-LAST:event_rotationSliderFocusLost
 
     private void plusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plusButtonActionPerformed
@@ -978,6 +1021,10 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_sepButtonActionPerformed
+
+    private void colorSpaceComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorSpaceComboBoxActionPerformed
+        changeColorSpace(colorSpaceComboBox.getSelectedIndex());
+    }//GEN-LAST:event_colorSpaceComboBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton alphaToggleButton;
