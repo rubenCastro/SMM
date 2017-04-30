@@ -26,6 +26,7 @@ import javax.swing.SpinnerNumberModel;
 import sm.image.KernelProducer;
 import sm.image.LookupTableProducer;
 import sm.image.color.GreyColorSpace;
+import sm.jaci.image.SepiaOP;
 import sm.jaci.ui.CanvasParameters;
 import sm.jaci.ui.FigureTypes;
 import sm.jaci.ui.MyInternalFrame;
@@ -358,6 +359,11 @@ public class MainWindow extends javax.swing.JFrame {
         functionPanel.add(sinButton);
 
         sepButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sepia.png"))); // NOI18N
+        sepButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sepButtonActionPerformed(evt);
+            }
+        });
         functionPanel.add(sepButton);
 
         bottomToolBar.add(functionPanel);
@@ -959,6 +965,19 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_bandButtonActionPerformed
+
+    private void sepButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sepButtonActionPerformed
+        BufferedImage imgSource;
+        MyInternalFrame mif = (MyInternalFrame) canvasDesktopPanel.getSelectedFrame();
+        if (mif != null) {
+            BufferedImage sourceImg = mif.getCanvas2d().getImage();
+            if (sourceImg != null) {
+                SepiaOP sepia = new SepiaOP();
+                sepia.filter(sourceImg, sourceImg);
+                repaint();
+            }
+        }
+    }//GEN-LAST:event_sepButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton alphaToggleButton;
